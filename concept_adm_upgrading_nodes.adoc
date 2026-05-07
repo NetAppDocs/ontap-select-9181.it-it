@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_upgrading_nodes.html 
+keywords: administer, administering, web, upgrading nodes 
+summary: 'Dopo aver distribuito un cluster ONTAP Select, è possibile aggiornare l"immagine ONTAP di ciascun nodo secondo necessità utilizzando la procedura standard di aggiornamento del software ONTAP.' 
+---
+= Aggiornare i nodi ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Dopo aver distribuito un ONTAP Select cluster, è possibile aggiornare l'immagine ONTAP su ciascun nodo del cluster, a seconda delle necessità.
+
+
+CAUTION: Non è possibile utilizzare l'utilità di amministrazione Deploy per eseguire aggiornamenti dei nodi ONTAP Select esistenti. L'utilità Deploy può essere utilizzata solo per creare nuovi cluster ONTAP Select.
+
+
+
+== Procedura generale
+
+A high-level, per aggiornare un nodo ONTAP Select esistente, è necessario seguire i passaggi seguenti.
+
+.Passaggi
+. Accedi alla link:https://mysupport.netapp.com/site/downloads/["Download dal sito di supporto NetApp"^] page.
+. Scorri verso il basso e seleziona *ONTAP Select Image*.
+. Seleziona la versione desiderata dell'immagine di installazione.
+. Esamina il Contratto di licenza con l'utente finale (EULA) e seleziona *Accetta e continua*.
+. Seleziona e scarica il pacchetto *ONTAP Select Image Upgrade* appropriato. Rispondi a tutte le richieste secondo necessità.
++
+Esaminare la link:reference_release_notes.html["note di rilascio"] per ulteriori informazioni e per eventuali procedure richieste prima di aggiornare un nodo ONTAP Select.
+
+. Aggiorna il nodo ONTAP Select utilizzando le procedure standard di aggiornamento ONTAP con il file di aggiornamento ONTAP Select. Per informazioni sui percorsi di aggiornamento supportati, fare riferimento al link:https://docs.netapp.com/us-en/ontap/upgrade/concept_upgrade_paths.html["Percorsi di aggiornamento ONTAP supportati"^].
+
+
+
+
+== Ripristina un nodo ONTAP Select
+
+Non è possibile ripristinare un nodo ONTAP Select a una versione precedente a quella su cui è stato originariamente installato. Ad esempio:
+
+ONTAP Select 9.16.1 viene installato inizialmente:: È possibile aggiornare il nodo alla versione 9.17.1 e quindi tornare alla versione 9.16.1 se necessario.
+ONTAP Select 9.17.1 viene installato inizialmente:: Il ripristino non è possibile perché non era stata installata alcuna versione precedente.
+
+
+
+
+== Utilizzare il driver di rete VMXNET3
+
+VMXNET3 è il driver di rete predefinito incluso nelle nuove implementazioni di cluster su VMware ESXi. Se si aggiorna un nodo ONTAP Select esistente che esegue ONTAP Select 9.4 o versioni precedenti, il driver di rete non viene aggiornato automaticamente. È necessario aggiornarlo manualmente a VMXNET3. Si consiglia di contattare il supporto NetApp per assistenza con l'aggiornamento.
+
+.Informazioni correlate
+link:https://docs.netapp.com/us-en/ontap/upgrade/index.html["Panoramica dell'aggiornamento di ONTAP"^]

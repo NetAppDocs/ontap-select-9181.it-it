@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: access-evaluation-software.html 
+keywords: ontap select, evaluation, software, register, download, access 
+summary: 'Richiedi l"accesso per scaricare il software di valutazione ONTAP Select.' 
+---
+= Accedi al software di valutazione ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Puoi accedere link:https://mysupport.netapp.com/site/downloads/evaluation/ontap-select["Software di valutazione ONTAP Select"^] se sei un cliente attuale di ONTAP Select e disponi di un diritto attivo oppure se sei un NetApp Partner e desideri scaricare una nuova licenza di valutazione Capacity Tiers.
+
+Se non rientrate in nessuna delle categorie precedenti e desiderate provare ONTAP Select a scopo di valutazione, potete seguire questi passaggi per richiedere l'accesso per scaricare il software di valutazione.
+
+.Informazioni su questa attività
+* Questa istruzione è destinata a vendite, partner e potenziali clienti NetApp che interagiscono con NetApp.
+* Le licenze di valutazione ONTAP Select Capacity Tiers hanno una validità limitata a 90 giorni a partire dalla data di installazione.
++
+
+NOTE: Non è possibile estendere una licenza di valutazione. Al termine dei 90 giorni, la licenza non sarà più valida e non sarà più possibile accedere ai dati associati.
+
+* Il software di valutazione contiene tutte le informazioni necessarie per scaricare l'utilità di amministrazione ONTAP Select Deploy e distribuire un cluster.
+
+
+
+
+== Passaggio 1: Registrati per un account
+
+Completa la registrazione dell'account NetApp, se necessario, e richiedi l'accesso prospect.
+
+.Passaggi
+. Crea un nuovo account o esci da un account esistente.
++
+[role="tabbed-block"]
+====
+.Crea un nuovo account
+--
+Registrati per un account sul link:https://mysupport.netapp.com/site/user/registration["Sito di supporto NetApp"^] utilizzando la tua email aziendale.
+
+
+NOTE: Gli account di posta elettronica gratuiti come gmail o yahoo non sono accettabili.
+
+Assicurati di non aver effettuato l'accesso con l'account appena creato.
+
+--
+.Account esistente
+--
+Se hai già un account, vai su link:https://mysupport.netapp.com/site/["Sito di supporto NetApp"^] e assicurati di non essere connesso.
+
+--
+====
+. Crea una richiesta di supporto non tecnico per elevare i livelli di accesso a "prospect".
++
+.. Seleziona la scheda *CASES*, quindi seleziona *Create non-technical cases*
+.. Seleziona *Problema di registrazione utente* come categoria di feedback.
+.. Seleziona *Crea caso*.
++
+Compila tutte le informazioni richieste e nella sezione commenti scrivi: "Il mio indirizzo email aziendale è <your-email-address>. Vorrei ottenere l'accesso prospect per scaricare il software di valutazione ONTAP Select."
+
++
+Includi il nome del tuo NetApp contact.
+
+.. Seleziona *Invia*.
+
+
+
+
+
+
+== Passaggio 2: Scarica il software di valutazione ONTAP Select
+
+Una volta che la tua richiesta di assistenza sarà stata esaminata e approvata, il supporto NetApp ti invierà una notifica tramite l'indirizzo email fornito.
+
+.Passaggio
+. https://mysupport.netapp.com/site/downloads/evaluation/ontap-select["Scarica il software di valutazione ONTAP Select"^].
++
+Il file della licenza di valutazione si trova all'interno del file zip.
+
+. Per ottemperare ai requisiti legali, è necessario link:https://mysupport.netapp.com/site/help["aprire una richiesta di assistenza"^] prima di ottenere l'accesso. Ciò aiuta NetApp a mantenere il controllo e la documentazione corretti, fornendoti il software pronto per la produzione di cui hai bisogno.
++
+
+NOTE: NetApp fornisce la versione "pronta per la produzione" di ONTAP Select, che non è una versione open-source o alternativa. Il supporto è disponibile solo se si effettua l'aggiornamento a una licenza di produzione.
+
+
+
+.E ora?
+Una volta completato il download del software di valutazione, seguire le istruzioni per scaricare l'utilità di amministrazione ONTAP Select Deploy e distribuire un cluster.
+
+.Informazioni correlate
+* link:concept_lic_evaluation.html["Scopri le licenze di valutazione per le implementazioni di ONTAP Select"]
+* link:task_adm_licenses.html#convert-license["Convertire una licenza di valutazione in una licenza di produzione"]
+

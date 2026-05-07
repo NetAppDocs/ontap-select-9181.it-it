@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_supported_configs.html 
+keywords: ontap select, supported network configurations 
+summary: 'Seleziona l"hardware migliore e configura la tua rete per ottimizzare le prestazioni e la resilienza.' 
+---
+= Configurazioni di rete ONTAP Select supportate
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Seleziona l'hardware migliore e configura la tua rete per ottimizzare le prestazioni e la resilienza.
+
+I fornitori di server sanno che i clienti hanno esigenze diverse e che la possibilità di scelta è fondamentale. Di conseguenza, al momento dell'acquisto di un server fisico, sono disponibili numerose opzioni per quanto riguarda le decisioni sulla connettività di rete. La maggior parte dei sistemi standard viene fornita con diverse schede di rete (NIC) che offrono opzioni a porta singola e multiporta con diverse combinazioni di velocità e throughput. Ciò include il supporto per adattatori NIC da 25Gb/s e 40Gb/s con VMware ESX.
+
+Poiché le prestazioni della ONTAP Select VM sono direttamente legate alle caratteristiche dell'hardware sottostante, l'aumento del throughput della VM tramite la selezione di NIC più veloci si traduce in un cluster con prestazioni superiori e in una migliore esperienza utente complessiva. Quattro NIC da 10 Gb o due NIC ad alta velocità (25/40 Gb/s) possono essere utilizzate per ottenere una configurazione di rete ad alte prestazioni. Sono supportate anche diverse altre configurazioni. Per i cluster a due nodi, sono supportate 4 porte da 1 Gb o 1 porta da 10 Gb. Per i cluster a nodo singolo, sono supportate 2 porte da 1 Gb.
+
+.Configurazioni di rete minime e consigliate
+Sono disponibili diverse configurazioni Ethernet supportate, a seconda delle dimensioni del cluster.
+
+[cols="30,35,35"]
+|===
+| Dimensione del cluster | Requisiti minimi | Raccomandazione 
+
+
+| Cluster a nodo singolo | 2 x 1GbE | 2 x 10GbE 
+
+
+| Cluster a due nodi o MetroCluster SDS | 4 x 1GbE o 1 x 10GbE | 2 x 10GbE 
+
+
+| Cluster a quattro, sei, otto, dieci o dodici nodi | 2 x 10GbE | 4 x 10GbE o 2 x 25/40GbE 
+|===
+
+NOTE: La conversione tra topologie a collegamento singolo e a collegamenti multipli su un cluster in esecuzione non è supportata a causa della possibile necessità di convertire tra diverse configurazioni di teaming delle schede di rete richieste per ciascuna topologia.
+
+.Configurazione di rete tramite più switch fisici
+Quando è disponibile hardware sufficiente, NetApp consiglia di utilizzare la configurazione multiswitch mostrata nella figura seguente, grazie alla maggiore protezione contro i guasti fisici degli switch.
+
+image:BP_02.jpg["Configurazione di rete tramite più switch fisici"]

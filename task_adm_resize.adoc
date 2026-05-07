@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: task_adm_resize.html 
+keywords: administer, administering, web, resizing nodes, resizing 
+summary: 'Dopo aver distribuito un ONTAP Select cluster, è possibile aggiornare il tipo di istanza dell"hypervisor dei nodi utilizzando l"utilità di amministrazione Deploy.' 
+---
+= Ridimensiona i nodi del cluster ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Dopo aver distribuito un ONTAP Select cluster, è possibile aggiornare il tipo di istanza dell'hypervisor dei nodi utilizzando l'utilità di amministrazione Deploy.
+
+
+NOTE: È possibile eseguire l'operazione di ridimensionamento dei nodi del cluster quando si utilizza il modello di licensing Capacity Tiers e il modello di licensing Capacity Pools.
+
+
+NOTE: Il ridimensionamento al tipo di istanza grande è supportato solo su ESXi.
+
+.Prima di iniziare
+Il cluster deve essere in stato online.
+
+.Informazioni su questa attività
+Questa procedura descrive come utilizzare l'interfaccia utente web di Deploy. È possibile utilizzare anche la CLI di Deploy per eseguire il ridimensionamento dell'istanza. Indipendentemente dall'interfaccia utilizzata, il tempo necessario per l'operazione di ridimensionamento può variare significativamente in base a diversi fattori e potrebbe richiedere un tempo considerevole per essere completato. È possibile ridimensionare un nodo solo aumentandone le dimensioni.
+
+.Passaggi
+. Sign in all'interfaccia utente web dell'utilità di distribuzione utilizzando l'account amministratore.
+. Fai clic sulla scheda *Cluster* nella parte superiore della pagina e seleziona il cluster desiderato dall'elenco.
+. Nella pagina dei dettagli del cluster, fai clic sull'icona a forma di ingranaggio a destra della pagina e seleziona *Ridimensiona istanza*.
+. Seleziona il *Tipo di istanza* e inserisci le credenziali ONTAP, quindi fai clic su *Modifica*.
+
+
+.Dopo aver finito
+È necessario attendere il completamento dell'operazione di ridimensionamento.

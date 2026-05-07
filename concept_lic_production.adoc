@@ -1,0 +1,71 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_production.html 
+keywords: license, licensing, production, purchased, standard, premium, premium xl 
+summary: 'Dopo aver verificato che ONTAP Select sia adatto alla vostra organizzazione, potete acquistare le licenze necessarie per supportare un"implementazione in produzione. Dovete scegliere tra il modello di licensing Capacity Tiers o Capacity Pools, nonché la capacità di archiviazione per ogni implementazione.' 
+---
+= Scopri le licenze ONTAP Select acquistate per le distribuzioni di produzione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Dopo aver stabilito che ONTAP Select è adatto alla tua organizzazione, puoi acquistare le licenze necessarie per supportare un'implementazione di produzione. Devi scegliere il modello di licensing Capacity Pools o Capacity Tiers, nonché la capacità di storage per ogni implementazione.
+
+
+
+== Caratteristiche comuni delle licenze
+
+I modelli di licensing _Capacity Pools_ e _Capacity Tiers_ sono molto diversi sotto diversi aspetti. Tuttavia, i due modelli di licensing condividono diverse caratteristiche comuni, tra cui:
+
+* È necessario acquistare una o più licenze, a seconda delle esigenze, quando si implementa ONTAP Select in un ambiente di produzione.
+* La capacità di archiviazione per una licenza viene allocata in incrementi di 1 TB.
+* Sono supportate tutte le offerte di licensing della piattaforma (standard, premium e premium XL).
+* Dovresti contattare il tuo team account NetApp o il partner per assistenza, se necessario, quando acquisisci le licenze necessarie.
+* È necessario caricare i file di licenza nell'utilità di amministrazione Deploy, che applicherà quindi le licenze in base al modello di licensing.
+* Dopo aver installato e attivato una licenza, è possibile aggiungere ulteriore capacità contattando il proprio team di account o partner NetApp per ottenere una licenza aggiornata.
+* Un nodo ONTAP Select inizialmente distribuito con una licenza acquistata non può essere convertito in una licenza di valutazione.
+
+
+
+
+== modello di licensing Capacity Tiers
+
+Ci sono diverse caratteristiche uniche del modello di licensing Capacity Tiers, tra cui:
+
+* È necessario acquistare una licenza per ogni nodo ONTAP Select.
+* La quantità minima acquistabile è di 1 TB.
+* Ogni licenza Capacity Tier ha una capacità di archiviazione ed è vincolata a uno specifico nodo.
+* La capacità di archiviazione identifica la capacità raw e corrisponde alla dimensione totale consentita dei dischi dati disponibili per la macchina virtuale ONTAP Select.
+* NetApp genera un numero di serie di licenza a nove cifre per ciascun nodo ONTAP Select.
+* Lo storage assegnato a un nodo è perpetuo (non è richiesto alcun rinnovo), ma è necessario rinnovare il contratto di supporto associato alla licenza.
+* Ogni nodo ONTAP Select in una coppia HA richiede una licenza che sia almeno pari allo storage raw collegato al nodo.
+* Il numero di serie del nodo è composto da nove cifre ed è uguale al numero di serie della licenza.
+* È possibile applicare il file di licenza durante la distribuzione del cluster o entro 30 giorni dalla creazione del cluster.
+
+
+
+
+== modello di licensing Capacity Pools
+
+Ci sono diverse caratteristiche uniche del modello di licensing Capacity Pools, tra cui:
+
+* È necessario acquistare una licenza per ogni Capacity Pool condiviso.
+* La quantità minima acquistabile è di 2 TB.
+* Ogni licenza Capacity Pool ha una capacità di archiviazione ed è bloccata su una specifica istanza di License Manager all'interno di un'utilità di amministrazione Deploy.
+* La capacità di archiviazione identifica la capacità raw e corrisponde alla dimensione totale consentita degli aggregati di dati che è possibile creare nella macchina virtuale ONTAP Select.
+* Un numero di serie di licenza a nove cifre viene generato da NetApp per ogni Capacity Pool.
+* Lo spazio di archiviazione assegnato a un Capacity Pool è valido solo per un periodo di tempo specifico in base all'acquisto (rinnovo richiesto).
+* Il License Manager genera un numero di serie del nodo di venti cifre in base al numero di serie della licenza Capacity Pool.
+* Tutti i nodi ONTAP Select in un cluster condividono la stessa capacità di licenza. Ciò significa che la licenza deve essere sufficientemente grande da fornire lo storage allocato a tutti i nodi del cluster.
+* Ciascun nodo affitta automaticamente capacità di archiviazione per i propri aggregati di dati locali da un Capacity Pool condiviso.
+
+
+.E ora?
+* link:concept_lic_platforms.html["Scopri le offerte di licenze per la piattaforma ONTAP Select"]
+* link:concept_lic_cp_operation.html["Scopri di più sul modello di licensing ONTAP Select"]
+

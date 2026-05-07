@@ -1,0 +1,47 @@
+---
+indexpage:
+  title: Documentazione di ONTAP Select
+  lead: NetApp ONTAP Select è un'appliance di storage software-defined che puoi implementare
+    su una varietà di server commodity hardware che eseguono l'hypervisor VMware ESXi
+    o Kernel-based Virtual Machine (KVM). Offre l'agilità necessaria per creare un'infrastruttura
+    cloud privato flessibile e scalabile. Questo sito contiene la documentazione per
+    ONTAP Select 9.18.1.
+  tiles:
+  - title: Inizia
+    links:
+    - title: Note di rilascio
+      url: https://library.netapp.com/ecm/ecm_download_file/ECMLP3365264
+    - title: Novità
+      url: "/reference_new_ots.html"
+    - title: Scopri ONTAP Select
+      url: "/concept_ots_overview.html"
+    - title: Licenze
+      url: "/concept_lic_evaluation.html"
+    - title: Prova ONTAP Select
+      url: "/access-evaluation-software.html"
+    - title: Domande frequenti
+      url: "/reference_faq.html"
+  - title: Installare e gestire
+    links:
+    - title: Pianifica la tua implementazione
+      url: "/concept_workflow_deploy.html"
+    - title: Installare
+      url: "/task_install_deploy.html"
+    - title: Gestisci i tuoi cluster
+      url: "/concept_adm_before.html"
+    - title: Utilizzare l'API REST
+      url: "/concept_api_how_access.html"
+    - title: Distribuisci un'istanza di valutazione di 90 giorni di un cluster
+      url: "/deploy-evaluation-ontap-select-ovf-template.html"
+  - title: Altre risorse
+    links:
+    - title: Libreria di prodotti ONTAP Select
+      url: https://mysupport.netapp.com/documentation/productlibrary/index.html?productID=62293
+    - title: Documentazione ONTAP 9
+      url: https://docs.netapp.com/us-en/ontap/
+    - title: Blog ONTAP Select
+      url: https://blog.netapp.com/tag/ontap-select/
+    - title: Community ONTAP Select
+      url: https://community.netapp.com/t5/forums/filteredbylabelpage/board-id/data-ontap-discussions/label-name/ontap%20select
+    - title: matrice di interoperabilità
+      url: https://mysupport.netapp.com/matrix/

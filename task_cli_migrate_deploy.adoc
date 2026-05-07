@@ -1,0 +1,119 @@
+---
+sidebar: sidebar 
+permalink: task_cli_migrate_deploy.html 
+keywords: administer, administering, cli, deploy, deploy instance, migrate 
+summary: 'È possibile migrare un"istanza esistente dell"utilità di amministrazione Deploy a una nuova macchina virtuale tramite l"interfaccia a riga di comando.' 
+---
+= Migrare un'istanza di ONTAP Select Deploy a una nuova macchina virtuale
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È possibile migrare un'istanza esistente dell'utilità di amministrazione Deploy a una nuova macchina virtuale tramite l'interfaccia a riga di comando.
+
+Questa procedura si basa sulla creazione di una nuova macchina virtuale che utilizza i dati di configurazione della macchina virtuale originale. Sia la nuova macchina virtuale che quella originale devono eseguire la stessa versione e release della Deploy utility. Non è possibile eseguire la migrazione a una versione e release diversa della Deploy utility.
+
+
+
+== Passaggio 1: Eseguire il backup dei dati di configurazione della distribuzione
+
+È necessario creare un backup dei dati di configurazione di Deploy durante la migrazione della macchina virtuale. È inoltre consigliabile creare un backup dopo la distribuzione di un ONTAP Select cluster. I dati vengono salvati in un singolo file crittografato che è possibile scaricare sulla workstation locale.
+
+.Prima di iniziare
+* Assicurarsi che Deploy non stia eseguendo altre attività durante l'operazione di backup.
+* Salvare l'immagine originale della macchina virtuale Deploy.
++
+
+CAUTION: L'immagine originale della macchina virtuale Deploy sarà necessaria in seguito in questa procedura, quando si ripristineranno i dati di configurazione di Deploy dalla macchina virtuale originale alla nuova.
+
+
+
+.Informazioni su questa attività
+Il file di backup creato acquisisce tutti i dati di configurazione della macchina virtuale. Questi dati descrivono gli aspetti dell'ambiente di distribuzione, inclusi i cluster ONTAP Select.
+
+.Passaggi
+. Sign in alla CLI dell'utilità di distribuzione tramite SSH con l'account amministratore.
+. Crea una copia di backup dei dati di configurazione di Deploy, che vengono memorizzati in una directory interna sul server Deploy:
++
+[source, cli]
+----
+deploy backup create
+----
+. Fornire una password per il backup quando richiesto.
++
+Il file di backup è crittografato in base alla password.
+
+. Visualizza i backup disponibili nel sistema:
++
+[source, cli]
+----
+deploy backup show -detailed
+----
+. Seleziona il file di backup in base alla data presente nel campo *Created* e annota il valore del *Download URL*.
++
+È possibile accedere al file di backup tramite l'URL.
+
+. Utilizzando un browser web o un'utilità come Curl, scarica il file di backup sulla tua workstation locale tramite l'URL.
+
+
+
+
+== Passaggio 2: Installare una nuova istanza della macchina virtuale Deploy
+
+È necessario creare una nuova istanza della macchina virtuale Deploy che puoi aggiornare con i dati di configurazione della macchina virtuale originale.
+
+.Prima di iniziare
+È necessario avere familiarità con le procedure utilizzate per scaricare e distribuire la macchina virtuale ONTAP Select Deploy in un ambiente VMware.
+
+.Informazioni su questa attività
+Questo compito viene descritto a un livello generale.
+
+.Passaggi
+. Crea una nuova istanza della macchina virtuale Deploy:
++
+.. Scarica l'immagine della macchina virtuale.
+.. Distribuisci la macchina virtuale e configura l'interfaccia di rete.
+.. Accedere all'utility di distribuzione tramite SSH.
+
+
+
+
+.Informazioni correlate
+link:task_install_deploy.html["Installa ONTAP Select Deploy"]
+
+
+
+== Passaggio 3: Ripristinare i dati di configurazione Deploy sulla nuova macchina virtuale
+
+È necessario ripristinare i dati di configurazione dalla macchina virtuale originale dell'utility Deploy alla nuova macchina virtuale. I dati sono contenuti in un singolo file che è necessario caricare dalla propria workstation locale.
+
+.Prima di iniziare
+È necessario disporre dei dati di configurazione da un backup precedente. I dati sono contenuti in un singolo file e devono essere disponibili sulla workstation locale.
+
+.Passaggi
+. In una shell dei comandi sulla workstation locale, utilizzare l'utilità sftp per caricare il file di backup sulla macchina virtuale Deploy, come mostrato nell'esempio seguente:
++
+....
+sftp admin@10.234.81.101 (provide password when prompted)
+put deploy_backup_20190601162151.tar.gz
+exit
+....
+. Sign in alla CLI dell'utilità di distribuzione tramite SSH con l'account amministratore.
+. Ripristina i dati di configurazione:
++
+[source, cli]
+----
+deploy backup restore -path <path_name> -filename <file_name>
+----
++
+Comando di esempio:
+
++
+`deploy backup restore -path /home/admin -filename deploy_backup_20180601162151.tar.gz`
+
+

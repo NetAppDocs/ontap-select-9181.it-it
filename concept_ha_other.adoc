@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_other.html 
+keywords: ontap select, ha, high availability, disk heartbeating, heartbeating, mailbox, failover, giveback 
+summary: HA disk heartbeating, HA mailbox, HA heartbeating, HA Failover e Giveback lavorano insieme per migliorare la protezione dei dati. 
+---
+= ONTAP Select HA migliora la protezione dei dati
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Le funzionalità di heartbeating del disco ad alta disponibilità (HA), HA mailbox, HA heartbeating, HA Failover e Giveback lavorano insieme per migliorare la protezione dei dati.
+
+
+
+== Battito cardiaco del disco
+
+Sebbene l'architettura HA di ONTAP Select sfrutti molti dei percorsi di codice utilizzati dagli array FAS tradizionali, esistono alcune eccezioni. Una di queste eccezioni riguarda l'implementazione dell'heartbeating basato su disco, un metodo di comunicazione non basato sulla rete utilizzato dai nodi del cluster per impedire che l'isolamento di rete causi un comportamento di split-brain. Uno scenario di split-brain è il risultato della partizione del cluster, in genere causata da guasti di rete, per cui ciascun lato ritiene che l'altro sia inattivo e tenta di assumere il controllo delle risorse del cluster.
+
+Le implementazioni HA di livello enterprise devono gestire con eleganza questo tipo di scenario. ONTAP lo fa tramite un metodo di heartbeat personalizzato basato su disco. Questo compito è svolto dalla mailbox HA, una posizione su storage fisico utilizzata dai nodi del cluster per scambiarsi i messaggi di heartbeat. Ciò aiuta il cluster a determinare la connettività e quindi a definire il quorum in caso di failover.
+
+Sui sistemi FAS, che utilizzano un'architettura HA con storage condiviso, ONTAP risolve i problemi di split-brain nei seguenti modi:
+
+* prenotazioni persistenti SCSI
+* Metadati HA persistenti
+* Stato HA inviato tramite interconnessione HA
+
+
+Tuttavia, nell'architettura shared-nothing di un ONTAP Select cluster, un nodo può visualizzare solo il proprio storage locale e non quello del partner HA. Pertanto, quando la partizione di rete isola ciascun lato di una coppia HA, i metodi precedenti per determinare il quorum del cluster e il comportamento di failover non sono disponibili.
+
+Sebbene il metodo esistente di rilevamento e prevenzione dello split-brain non possa essere utilizzato, è comunque necessario un metodo di mediazione che si adatti ai vincoli di un ambiente shared-nothing. ONTAP Select estende ulteriormente l'infrastruttura di mailbox esistente, consentendole di fungere da metodo di mediazione in caso di partizionamento della rete. Poiché lo storage condiviso non è disponibile, la mediazione viene realizzata tramite l'accesso ai dischi delle mailbox su NAS. Questi dischi sono distribuiti in tutto il cluster, incluso il mediatore in un cluster a due nodi, utilizzando il protocollo iSCSI. Pertanto, decisioni intelligenti di failover possono essere prese da un nodo del cluster in base all'accesso a questi dischi. Se un nodo può accedere ai dischi delle mailbox di altri nodi al di fuori del suo partner HA, è probabile che sia attivo e funzionante.
+
+
+NOTE: L'architettura della casella di posta e il metodo heartbeating basato su disco per risolvere i problemi di quorum e split-brain del cluster sono i motivi per cui la variante multi-nodo di ONTAP Select richiede quattro nodi separati o un mediatore per un cluster a due nodi.
+
+
+
+== Pubblicazione della mailbox HA
+
+L'architettura HA mailbox utilizza un modello di invio messaggi. A intervalli regolari, i nodi del cluster inviano messaggi a tutti gli altri dischi mailbox del cluster, incluso il mediatore, indicando che il nodo è attivo e funzionante. All'interno di un cluster integro, in qualsiasi momento, un singolo disco mailbox su un nodo del cluster contiene messaggi inviati da tutti gli altri nodi del cluster.
+
+A ciascun nodo del cluster Select è associato un disco virtuale utilizzato specificamente per l'accesso condiviso alla mailbox. Questo disco è denominato disco mailbox del mediatore, perché la sua funzione principale è quella di fungere da metodo di mediazione del cluster in caso di guasti dei nodi o partizionamento della rete. Questo disco mailbox contiene partizioni per ciascun nodo del cluster ed è montato tramite una rete iSCSI dagli altri nodi del cluster Select. Periodicamente, questi nodi pubblicano gli stati di salute sulla partizione appropriata del disco mailbox. L'utilizzo di dischi mailbox accessibili tramite rete e distribuiti in tutto il cluster consente di dedurre lo stato di salute dei nodi tramite una matrice di raggiungibilità. Ad esempio, i nodi del cluster A e B possono pubblicare sulla mailbox del nodo del cluster D, ma non sulla mailbox del nodo C. Inoltre, il nodo del cluster D non può pubblicare sulla mailbox del nodo C, quindi è probabile che il nodo C sia inattivo o isolato dalla rete e debba essere preso in consegna.
+
+
+
+== Battito cardiaco HA
+
+Analogamente alle piattaforme NetApp FAS, ONTAP Select invia periodicamente messaggi heartbeat HA tramite l'interconnessione HA. All'interno del cluster ONTAP Select, ciò avviene tramite una connessione di rete TCP/IP esistente tra i partner HA. Inoltre, i messaggi heartbeat basati su disco vengono inviati a tutti i dischi mailbox HA, inclusi i dischi mailbox del mediatore. Questi messaggi vengono inviati ogni pochi secondi e letti periodicamente. La frequenza con cui vengono inviati e ricevuti consente al cluster ONTAP Select di rilevare eventi di errore HA entro circa 15 secondi, la stessa finestra disponibile sulle piattaforme FAS. Quando i messaggi heartbeat non vengono più letti, viene attivato un evento di failover.
+
+La figura seguente mostra il processo di invio e ricezione dei messaggi heartbeat tramite l'interconnessione HA e i dischi mediatori dal punto di vista di un singolo nodo del cluster ONTAP Select, nodo C.
+
+
+NOTE: I segnali di heartbeat di rete vengono inviati tramite l'interconnessione HA al partner HA, il nodo D, mentre i segnali di heartbeat del disco utilizzano i dischi mailbox su tutti i nodi del cluster, A, B, C e D.
+
+*Heartbeat HA in un cluster a quattro nodi: stato stazionario*image:DDHA_05.jpg["Battito cardiaco HA in un cluster a quattro nodi: stato stazionario"]
+
+
+
+== Failover e giveback HA
+
+Durante un'operazione di failover, il nodo sopravvissuto assume la responsabilità della gestione dei dati per il nodo peer utilizzando la copia locale dei dati del partner HA. Le operazioni di I/O del client possono continuare senza interruzioni, ma le modifiche a questi dati devono essere replicate prima che possa avvenire il giveback. Si noti che ONTAP Select non supporta un giveback forzato, poiché ciò comporta la perdita delle modifiche memorizzate sul nodo sopravvissuto.
+
+L'operazione di sync back viene attivata automaticamente quando il nodo riavviato si riunisce al cluster. Il tempo necessario per il sync back dipende da diversi fattori. Questi fattori includono il numero di modifiche da replicare, la latenza di rete tra i nodi e la velocità dei sottosistemi disco su ciascun nodo. È possibile che il tempo necessario per il sync back superi la finestra di auto give back di 10 minuti. In tal caso, è necessario un giveback manuale dopo il sync back. L'avanzamento del sync back può essere monitorato utilizzando il seguente comando:
+
+[listing]
+----
+storage aggregate status -r -aggregate <aggregate name>
+----

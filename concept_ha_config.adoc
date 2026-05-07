@@ -1,0 +1,71 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_config.html 
+keywords: ontap select, high availability configurations, two-node ha, multi-node ha, mc sds 
+summary: Scopri le opzioni di alta disponibilità per selezionare la configurazione HA più adatta al tuo ambiente. 
+---
+= ONTAP Select configurazioni ad alta disponibilità
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Scopri le opzioni di alta disponibilità per selezionare la configurazione HA più adatta al tuo ambiente.
+
+Sebbene i clienti stiano iniziando a spostare i carichi di lavoro delle applicazioni da dispositivi di storage di classe enterprise a soluzioni software in esecuzione su commodity hardware, le aspettative e le esigenze in termini di resilienza e tolleranza ai guasti non sono cambiate. Una soluzione HA che garantisca un obiettivo di punto di ripristino (RPO) pari a zero protegge il cliente dalla perdita di dati dovuta a un guasto di qualsiasi componente dello stack infrastrutturale.
+
+Gran parte del mercato SDS si basa sul concetto di storage shared-nothing, con la replica software che fornisce resilienza dei dati archiviando più copie dei dati utente su diversi silos di storage. ONTAP Select si basa su questa premessa utilizzando le funzionalità di replica sincrona (RAID SyncMirror) fornite da ONTAP per archiviare una copia aggiuntiva dei dati utente all'interno del cluster. Ciò avviene nel contesto di una coppia HA. Ogni coppia HA archivia due copie dei dati utente: una sullo storage fornito dal nodo locale e una sullo storage fornito dal partner HA. All'interno di un cluster ONTAP Select, HA e replica sincrona sono collegate e le funzionalità dei due non possono essere disaccoppiate o utilizzate indipendentemente. Di conseguenza, la funzionalità di replica sincrona è disponibile solo nell'offerta multi-nodo.
+
+
+NOTE: In un cluster ONTAP Select, la funzionalità di replica sincrona è una funzione dell'implementazione HA, non una sostituzione dei motori di replica asincrona SnapMirror o SnapVault. La replica sincrona non può essere utilizzata indipendentemente dall'HA.
+
+Esistono due modelli di distribuzione HA di ONTAP Select: i cluster multi-nodo (quattro, sei, otto, dieci o dodici nodi) e i cluster a due nodi. La caratteristica saliente di un cluster ONTAP Select a due nodi è l'utilizzo di un servizio di mediazione esterno per risolvere scenari split-brain. La VM ONTAP Deploy funge da mediatore predefinito per tutte le coppie HA a due nodi che configura.
+
+Le due architetture sono rappresentate nelle figure seguenti.
+
+*Cluster a due nodi ONTAP Select con mediatore remoto e utilizzo di storage collegato localmente*
+
+image:DDHA_01.jpg["Cluster a due nodi ONTAP Select con mediatore remoto e utilizzo di storage collegato localmente"]
+
+
+NOTE: Il cluster ONTAP Select a due nodi è composto da una coppia HA e un mediatore. All'interno della coppia HA, gli aggregati di dati su ciascun nodo del cluster vengono mirrorati in modo sincrono e, in caso di failover, non si verifica alcuna perdita di dati.
+
+*Cluster ONTAP Select a quattro nodi con storage collegato localmente*image:DDHA_02.jpg["Cluster ONTAP Select a quattro nodi con storage collegato localmente"]
+
+* Il cluster ONTAP Select a quattro nodi è composto da due coppie HA. I cluster a sei, otto, dieci e dodici nodi sono composti rispettivamente da tre, quattro, cinque e sei coppie HA. All'interno di ciascuna coppia HA, gli aggregati di dati su ciascun nodo del cluster vengono mirrorati in modo sincrono e, in caso di failover, non si verifica alcuna perdita di dati.
+* Può essere presente una sola istanza di ONTAP Select su un server fisico quando si utilizza lo storage DAS. ONTAP Select richiede l'accesso non condiviso al controller RAID locale del sistema ed è progettato per gestire i dischi collegati localmente, operazione che sarebbe impossibile senza connettività fisica allo storage.
+
+
+
+
+== Coppia HA a due nodi rispetto a coppia HA a più nodi
+
+A differenza degli array FAS, i nodi ONTAP Select in una coppia HA comunicano esclusivamente tramite la rete IP. Ciò significa che la rete IP rappresenta un single point of failure (SPOF) e la protezione da partizioni di rete e scenari split-brain diventa un aspetto importante della progettazione. Il cluster multi-nodo può supportare guasti a nodo singolo perché il quorum del cluster può essere stabilito dai tre o più nodi superstiti. Il cluster a due nodi si affida al servizio di mediazione ospitato dalla VM ONTAP Deploy per ottenere lo stesso risultato.
+
+Il traffico di rete heartbeat tra i nodi ONTAP Select e il servizio mediatore ONTAP Deploy è minimo e resiliente, in modo che la VM ONTAP Deploy possa essere ospitata in un data center diverso rispetto al cluster a due nodi ONTAP Select.
+
+
+NOTE: La VM ONTAP Deploy diventa parte integrante di un cluster a due nodi quando funge da mediatore per tale cluster. Se il servizio mediatore non è disponibile, il cluster a due nodi continua a fornire dati, ma le funzionalità di failover dello storage del cluster ONTAP Select vengono disabilitate. Pertanto, il servizio mediatore ONTAP Deploy deve mantenere una comunicazione costante con ciascun nodo ONTAP Select nella coppia HA. Sono necessari una larghezza di banda minima di 5 Mbps e una latenza di round-trip time (RTT) massima di 125 ms per consentire il corretto funzionamento del quorum del cluster.
+
+Se la VM ONTAP Deploy che funge da mediatore è temporaneamente o potenzialmente permanentemente non disponibile, è possibile utilizzare una VM ONTAP Deploy secondaria per ripristinare il quorum del cluster a due nodi. Questo comporta una configurazione in cui la nuova VM ONTAP Deploy non è in grado di gestire i nodi ONTAP Select, ma partecipa con successo all'algoritmo di quorum del cluster. La comunicazione tra i nodi ONTAP Select e la VM ONTAP Deploy avviene utilizzando il protocollo iSCSI su IPv4. L'indirizzo IP di gestione del nodo ONTAP Select è l'initiator e l'indirizzo IP della VM ONTAP Deploy è il target. Pertanto, non è possibile supportare indirizzi IPv6 per gli indirizzi IP di gestione dei nodi durante la creazione di un cluster a due nodi. I dischi delle mailbox ospitati da ONTAP Deploy vengono creati automaticamente e mascherati ai corretti indirizzi IP di gestione del nodo ONTAP Select al momento della creazione del cluster a due nodi. L'intera configurazione viene eseguita automaticamente durante la configurazione e non è richiesta alcuna ulteriore azione amministrativa. L'istanza ONTAP Deploy che crea il cluster è il mediatore predefinito per quel cluster.
+
+Se è necessario modificare la posizione originale del mediatore, è richiesta un'azione amministrativa. È possibile ripristinare il quorum del cluster anche se la VM ONTAP Deploy originale viene persa. Tuttavia, NetApp consiglia di eseguire il backup del database ONTAP Deploy dopo ogni istanza di un cluster a due nodi.
+
+
+
+== Coppia HA a due nodi rispetto a coppia HA stretched a due nodi (MetroCluster SDS)
+
+È possibile estendere un cluster HA attivo/attivo a due nodi su distanze maggiori e potenzialmente posizionare ciascun nodo in un data center diverso. L'unica differenza tra un cluster a due nodi e un cluster a due nodi esteso (anche detto MetroCluster SDS) è la distanza di connettività di rete tra i nodi.
+
+Un cluster a due nodi è definito come un cluster in cui entrambi i nodi si trovano nello stesso data center entro una distanza di 300m. In generale, entrambi i nodi hanno uplink allo stesso switch di rete o a un insieme di switch di rete interswitch link (ISL).
+
+Un cluster MetroCluster SDS a due nodi è definito come un cluster con nodi fisicamente separati (stanze diverse, edifici diversi e data center diversi) da più di 300 m. Inoltre, le connessioni uplink di ciascun nodo sono collegate a switch di rete separati. Il MetroCluster SDS non richiede hardware dedicato. Tuttavia, l'ambiente deve rispettare i requisiti di latenza (un massimo di 5 ms per RTT e 5 ms per jitter, per un totale di 10 ms).
+
+MetroCluster SDS è una funzionalità premium e richiede una licenza Premium o una licenza Premium XL. La licenza Premium supporta la creazione di macchine virtuali di piccole e medie dimensioni, nonché supporti HDD e SSD. La licenza Premium XL supporta anche la creazione di unità NVMe.
+
+
+NOTE: MetroCluster SDS è supportato sia con storage locale collegato (DAS) sia con storage condiviso (vNAS). Si noti che le configurazioni vNAS di solito presentano una latenza innata più elevata a causa della rete tra la ONTAP Select VM e lo storage condiviso. Le configurazioni MetroCluster SDS devono garantire un massimo di 10 ms di latenza tra i nodi, inclusa la latenza dello storage condiviso. In altre parole, misurare solo la latenza tra le VM Select non è sufficiente, perché la latenza dello storage condiviso non è trascurabile per queste configurazioni.

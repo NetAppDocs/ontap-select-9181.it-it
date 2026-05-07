@@ -1,0 +1,168 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_single_multi_node.html 
+keywords: ontap select, single node network configuration, multi-node network configuration 
+summary: ONTAP Select supporta sia configurazioni di rete a nodo singolo che a più nodi. 
+---
+= Configurazioni di rete ONTAP Select a nodo singolo e multiplo
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select supporta sia cluster a nodo singolo che configurazioni di rete multi-nodo.
+
+
+
+== Configurazione di rete a nodo singolo
+
+Le configurazioni ONTAP Select a nodo singolo non richiedono la rete interna ONTAP, perché non vi è traffico di cluster, HA o mirror.
+
+A differenza della versione multi-nodo del prodotto ONTAP Select, ogni ONTAP Select VM contiene tre adattatori di rete virtuali, presentati alle porte di rete ONTAP e0a, e0b ed e0c.
+
+Queste porte vengono utilizzate per fornire i seguenti servizi: gestione, dati e LIF intercluster.
+
+.KVM
+È possibile implementare ONTAP Select come cluster a nodo singolo. L'host hypervisor include uno switch virtuale che fornisce l'accesso alla rete esterna.
+
+.ESXi
+La figura seguente mostra la relazione tra queste porte e gli adattatori fisici sottostanti. La figura raffigura un nodo del cluster ONTAP Select sull'hypervisor ESXi.
+
+*Configurazione di rete di cluster a nodo singolo ONTAP Select*
+
+image:DDN_03.jpg["Configurazione di rete del cluster a nodo singolo ONTAP Select"]
+
+
+NOTE: Sebbene due schede di rete siano sufficienti per un cluster a nodo singolo, è comunque necessario il NIC teaming.
+
+
+
+=== Assegnazione LIF
+
+Come spiegato nella sezione sull'assegnazione LIF multi-nodo di questo documento, ONTAP utilizza gli IPspaces per mantenere il traffico di rete del cluster separato dal traffico dati e di gestione. La variante a nodo singolo di questa piattaforma non contiene una rete cluster. Pertanto, non sono presenti porte nell'IPspace del cluster.
+
+
+NOTE: I LIF di gestione del cluster e dei nodi vengono creati automaticamente durante la configurazione del cluster ONTAP Select. È possibile creare i LIF rimanenti dopo l'implementazione.
+
+
+
+=== LIF di gestione e dati (e0a, e0b e e0c)
+
+Le porte ONTAP e0a, e0b ed e0c sono designate come porte candidate per le LIF che trasportano i seguenti tipi di traffico:
+
+* Traffico del protocollo SAN/NAS (CIFS, NFS e iSCSI)
+* Traffico di gestione di cluster, nodi e SVM
+* Traffico intercluster (SnapMirror e SnapVault)
+
+
+
+
+== Configurazione di rete multi-nodo
+
+La configurazione di rete multi-nodo ONTAP Select consiste in due reti.
+
+Si tratta di una rete interna, responsabile della fornitura di servizi di cluster e replica interna, e di una rete esterna, responsabile della fornitura di servizi di accesso e gestione dei dati. L'isolamento end-to-end del traffico che scorre all'interno di queste due reti è estremamente importante per creare un ambiente adatto alla resilienza del cluster.
+
+Queste reti sono rappresentate nella figura seguente, che mostra un cluster ONTAP Select a quattro nodi in esecuzione su una piattaforma VMware vSphere. I cluster a sei, otto, dieci e dodici nodi presentano una configurazione di rete simile.
+
+
+NOTE: Ogni istanza di ONTAP Select risiede su un server fisico separato. Il traffico interno ed esterno è isolato utilizzando gruppi di porte di rete separati, che vengono assegnati a ciascuna interfaccia di rete virtuale e consentono ai nodi del cluster di condividere la stessa infrastruttura di switch di rete fisica.
+
+*Panoramica di una configurazione di rete di un cluster multi-nodo ONTAP Select*
+
+image:DDN_01.jpg["Panoramica di una configurazione di rete di un cluster multi-nodo ONTAP Select"]
+
+Ogni macchina virtuale ONTAP Select contiene sette schede di rete virtuali presentate a ONTAP come un set di sette porte di rete, da e0a a e0g. Sebbene ONTAP tratti questi adattatori come NIC fisiche, in realtà sono virtuali e vengono mappati a un set di interfacce fisiche tramite un livello di rete virtualizzato. Di conseguenza, ogni server host non richiede sei porte di rete fisiche.
+
+
+NOTE: L'aggiunta di schede di rete virtuali alla VM ONTAP Select non è supportata.
+
+Queste porte sono preconfigurate per fornire i seguenti servizi:
+
+* e0a, e0b e e0g. LIF di gestione e dati
+* e0c, e0d. LIF di rete del cluster
+* e0e. RSM
+* e0f. Interconnessione HA
+
+
+Le porte e0a, e0b ed e0g risiedono sulla rete esterna. Sebbene le porte da e0c a e0f svolgano diverse funzioni, insieme costituiscono la rete Select interna. Quando si prendono decisioni sulla progettazione della rete, è necessario posizionare queste porte su un'unica rete di livello 2. Non è necessario separare questi adattatori virtuali su reti diverse.
+
+La relazione tra queste porte e gli adattatori fisici sottostanti è illustrata nella figura seguente, che raffigura un nodo del cluster ONTAP Select sull'hypervisor ESXi.
+
+*Configurazione di rete di un singolo nodo che fa parte di un cluster ONTAP Select* image:DDN_02.jpg["Configurazione di rete di un singolo nodo che fa parte di un cluster ONTAP Select"]
+
+La separazione del traffico interno ed esterno tra diverse schede di rete fisiche impedisce un accesso insufficiente alle risorse di rete, introducendo latenze nel sistema. Inoltre, l'aggregazione tramite NIC teaming consente al nodo del cluster ONTAP Select di continuare ad accedere alla rete in caso di guasto di un singolo adattatore di rete.
+
+
+NOTE: Sia il gruppo di porte di rete esterna che quello di rete interna contengono tutti e quattro gli adattatori NIC in modo simmetrico. Le porte attive nel gruppo di porte di rete esterna sono le porte di standby nella rete interna. Viceversa, le porte attive nel gruppo di porte di rete interna sono le porte di standby nel gruppo di porte di rete esterna.
+
+
+
+=== Assegnazione LIF
+
+Con l'introduzione degli IPspace, i ruoli delle porte ONTAP sono stati deprecati. Come gli array FAS, i cluster ONTAP Select contengono sia un IPspace predefinito che un cluster IPspace. Inserendo le porte di rete e0a, e0b ed e0g nell'IPspace predefinito e le porte e0c ed e0d nell'IPspace del cluster, queste porte vengono di fatto isolate dall'hosting di LIF non appartenenti. Le porte rimanenti all'interno del cluster ONTAP Select vengono utilizzate tramite l'assegnazione automatica delle interfacce che forniscono servizi interni. Non sono esposte tramite la shell ONTAP, come avviene per le interfacce di interconnessione RSM e HA.
+
+
+NOTE: Non tutte le LIF sono visibili tramite la shell dei comandi di ONTAP. Le interfacce di interconnessione HA e RSM sono nascoste a ONTAP e vengono utilizzate internamente per fornire i rispettivi servizi.
+
+Le porte di rete e le LIF sono descritte in dettaglio nelle sezioni seguenti.
+
+
+
+=== LIF di gestione e dati (e0a, e0b e e0g)
+
+Le porte ONTAP e0a, e0b ed e0g sono designate come porte candidate per le LIF che trasportano i seguenti tipi di traffico:
+
+* Traffico del protocollo SAN/NAS (CIFS, NFS e iSCSI)
+* Traffico di gestione di cluster, nodi e SVM
+* Traffico intercluster (SnapMirror e SnapVault)
+
+
+
+NOTE: I LIF di gestione del cluster e dei nodi vengono creati automaticamente durante la configurazione del cluster ONTAP Select. È possibile creare i LIF rimanenti dopo l'implementazione.
+
+
+
+=== LIF di rete del cluster (e0c, e0d)
+
+Le porte ONTAP e0c ed e0d sono delegate come porte home per le interfacce del cluster. All'interno di ciascun nodo del cluster ONTAP Select, due interfacce del cluster vengono generate automaticamente durante la configurazione di ONTAP utilizzando indirizzi IP link-local (169.254.x.x).
+
+
+NOTE: Non è possibile assegnare un indirizzo IP statico a queste interfacce e non si dovrebbero creare ulteriori interfacce cluster.
+
+Il traffico di rete del cluster deve fluire attraverso una rete di livello 2 a bassa latenza e non instradata. A causa dei requisiti di throughput e latenza del cluster, è necessario posizionare fisicamente il cluster ONTAP Select nelle vicinanze (ad esempio, multipack, singolo data center). La creazione di configurazioni di cluster estesi a quattro, sei, otto, dieci o dodici nodi separando i nodi HA su una WAN o su distanze geografiche significative non è supportata. È supportata una configurazione estesa a due nodi con un mediatore.
+
+Per dettagli, consultare la sezione link:reference_plan_best_practices.html#two-node-stretched-ha-metrocluster-sds-best-practices["Best practice per la coppia HA estesa a due nodi (MetroCluster SDS)"].
+
+
+NOTE: Per garantire il massimo throughput per il traffico di rete del cluster, questa porta di rete è configurata per utilizzare frame jumbo (da 7500 a 9000 MTU). Per il corretto funzionamento del cluster, verificare che i frame jumbo siano abilitati su tutti gli switch virtuali e fisici upstream che forniscono servizi di rete interni ai nodi del cluster ONTAP Select.
+
+
+
+=== Traffico RAID SyncMirror (e0e)
+
+La replica sincrona dei blocchi tra i nodi partner HA avviene tramite un'interfaccia di rete interna residente sulla network port e0e. Questa funzionalità si attiva automaticamente, utilizzando le interfacce di rete configurate da ONTAP durante la configurazione del cluster, e non richiede alcuna configurazione da parte dell'amministratore.
+
+
+NOTE: La porta e0e è riservata da ONTAP per il traffico di replicazione interno. Pertanto, né la porta né il LIF ospitato sono visibili nella CLI di ONTAP o in System Manager. Questa interfaccia è configurata per utilizzare un indirizzo IP locale del collegamento generato automaticamente e non è possibile assegnare un indirizzo IP alternativo. Questa porta di rete richiede l'uso di frame jumbo (7500 a 9000 MTU).
+
+
+
+=== Interconnessione HA (e0f)
+
+NetApp FAS array utilizzano hardware specializzato per trasmettere informazioni tra coppie HA in un cluster ONTAP. Gli ambienti software-defined, tuttavia, in genere non dispongono di questo tipo di apparecchiatura (come dispositivi InfiniBand o iWARP), quindi è necessaria una soluzione alternativa. Sebbene siano state prese in considerazione diverse possibilità, i requisiti ONTAP relativi al trasporto di interconnessione hanno richiesto che questa funzionalità fosse emulata via software. Di conseguenza, all'interno di un cluster ONTAP Select, la funzionalità dell'interconnessione HA (tradizionalmente fornita dall'hardware) è stata integrata nel sistema operativo, utilizzando Ethernet come meccanismo di trasporto.
+
+Ciascun nodo ONTAP Select è configurato con una porta di interconnessione HA, e0f. Questa porta ospita l'interfaccia di rete di interconnessione HA, responsabile di due funzioni principali:
+
+* Mirroring del contenuto della NVRAM tra coppie HA
+* Invio/ricezione di informazioni sullo stato HA e messaggi heartbeat di rete tra coppie HA
+
+
+Il traffico di interconnessione HA fluisce attraverso questa porta di rete utilizzando un'unica interfaccia di rete, sovrapponendo i frame RDMA (Remote Direct Memory Access) all'interno dei pacchetti Ethernet.
+
+
+NOTE: Come la porta RSM (e0e), né la porta fisica né l'interfaccia di rete ospitata sono visibili agli utenti né dalla ONTAP CLI né da System Manager. Di conseguenza, non è possibile modificare l'indirizzo IP di questa interfaccia e non è possibile cambiare lo stato della porta. Questa porta di rete richiede l'uso di frame jumbo (7500 a 9000 MTU).

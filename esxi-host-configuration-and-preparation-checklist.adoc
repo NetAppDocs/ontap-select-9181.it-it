@@ -1,0 +1,95 @@
+---
+sidebar: sidebar 
+permalink: esxi-host-configuration-and-preparation-checklist.html 
+keywords: ontap select, pre-installation checklist, esxi, host preparation 
+summary: 'Preparare ciascun host hypervisor ESXi su cui è distribuito un nodo ONTAP Select. Durante la preparazione degli host, valutare attentamente l"ambiente di distribuzione per assicurarsi che gli host siano configurati correttamente e pronti a supportare la distribuzione di un cluster ONTAP Select.' 
+---
+= Lista di controllo per la configurazione e la preparazione dell'host ESXi per ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Preparare ciascun host hypervisor ESXi in cui è distribuito un nodo ONTAP Select. Durante la preparazione degli host, valutare attentamente l'ambiente di distribuzione per assicurarsi che gli host siano configurati correttamente e pronti a supportare la distribuzione di un cluster ONTAP Select.
+
+
+NOTE: L'utilità di amministrazione ONTAP Select Deploy non esegue la configurazione di rete e dello storage richiesta per gli host dell'hypervisor. È necessario preparare manualmente ciascun host prima di distribuire un cluster ONTAP Select.
+
+
+
+== Passaggio 1: Preparare l'host hypervisor ESXi
+
+Verificare la configurazione dell'host ESXi e delle porte del firewall.
+
+.Passaggi
+. Verificare che ogni ESXi sia configurato come segue:
++
+** Un hypervisor preinstallato e supportato
+** Una licenza vSphere VMware
+
+
+. Verificare che lo stesso vCenter server possa gestire tutti gli host in cui è distribuito un nodo ONTAP Select all'interno del cluster.
+. Verificare che le porte del firewall siano configurate per consentire l'accesso a vSphere. Queste porte devono essere aperte per supportare la connettività della porta seriale alle macchine virtuali ONTAP Select.
++
+[role="tabbed-block"]
+====
+.Consigliato
+--
+NetApp consiglia di aprire le seguenti porte del firewall per consentire l'accesso a vSphere:
+
+** Porte 7200 – 7400 (sia traffico inbound che outbound)
+
+
+--
+.Predefinito
+--
+Per impostazione predefinita, VMware consente l'accesso sulle seguenti porte:
+
+** Porta 22 e porte 1024 – 65535 (traffico in entrata)
+** Porte 0 – 65535 (traffico outbound)
+
+
+--
+====
++
+Per ulteriori informazioni, consulta la link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vsphere-security-8-0/securing-esxi-hosts/customizing-hosts-with-the-security-profile/esxi-firewall-configuration.html["Documentazione Broadcom VMware vSphere"^].
+
+. Prendi visione dei diritti richiesti per vCenter. Vedi link:reference_plan_ots_vcenter.html["Server VMware vCenter"] per maggiori informazioni.
+
+
+
+
+== Passaggio 2: Esaminare la configurazione del cluster ONTAP Select
+
+È possibile implementare ONTAP Select come cluster a più nodi o come cluster a nodo singolo. In molti casi, un cluster a più nodi è preferibile grazie alla maggiore capacità di storage e alla funzionalità di alta disponibilità (HA).
+
+Le figure seguenti illustrano le reti ONTAP Select utilizzate con un cluster a nodo singolo e con un cluster a quattro nodi.
+
+[role="tabbed-block"]
+====
+.cluster a nodo singolo
+--
+La figura seguente illustra un cluster a nodo singolo. La rete esterna trasporta il traffico dei client, di gestione e di replica tra cluster (SnapMirror/SnapVault).
+
+image:CHK_01.jpg["cluster a nodo singolo che mostra una rete"]
+
+--
+.cluster a quattro nodi
+--
+La figura seguente illustra un cluster a quattro nodi che mostra due reti. La rete interna consente la comunicazione tra i nodi a supporto dei servizi di rete del cluster ONTAP. La rete esterna trasporta il traffico client, di gestione e di replica tra cluster (SnapMirror/SnapVault).
+
+image:CHK_02.jpg["cluster a quattro nodi che mostra due reti"]
+
+--
+.Nodo singolo all'interno di un cluster a quattro nodi
+--
+La figura seguente illustra la tipica configurazione di rete per una singola macchina virtuale ONTAP Select all'interno di un cluster a quattro nodi. Sono presenti due reti separate: ONTAP-internal e ONTAP-external.
+
+image:CHK_03.jpg["Nodo singolo all'interno di un cluster a quattro nodi"]
+
+--
+====

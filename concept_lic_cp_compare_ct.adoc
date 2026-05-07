@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_compare_ct.html 
+keywords: license, licensing, Capacity Pools, Capacity Tiers, comparing 
+summary: Esistono diverse differenze tra i modelli di licensing Capacity Tiers e Capacity Pools. 
+---
+= Confronta il modello di licensing ONTAP Select Capacity Tiers e Capacity Pools
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+La tabella seguente confronta i due modelli di licensing di produzione supportati da ONTAP Select.
+
+[cols="20,40,40"]
+|===
+|  | Livelli di capacità | Pool di capacità 
+
+
+| Numero di serie della licenza | NetApp genera nove cifre e le assegna a un nodo | NetApp genera nove cifre e le assegna a un Capacity Pool 
+
+
+| Blocco licenza | Bloccato sul nodo ONTAP Select | Bloccato sull'istanza di License Manager 
+
+
+| Durata della licenza | Perpetuo (non è richiesto alcun rinnovo) | Durata fissa in base all'acquisto (rinnovo richiesto) 
+
+
+| Durata del lease per l'aggregato di dati | Non applicabile | Da un'ora a sette giorni 
+
+
+| Numero di serie del nodo | Nove cifre e pari al numero di serie della licenza | Venti cifre generate da License Manager 
+
+
+| Supporto | Componente aggiuntivo e a tempo limitato | Incluso e co-termine 
+
+
+| Tipi di licenza | Standard, premium, premium XL | Standard, premium, premium XL 
+
+
+| Licenza di valutazione disponibile | Sì | Sì 
+
+
+| Aggiornamento da valutazione a produzione | Sì | No 
+
+
+| ONTAP Select ridimensionamento macchina virtuale (da piccola a media, da media a grande) | Sì | Sì 
+
+
+| Applicazione: licenza scaduta | N/A | Sì (nessun grace period) 
+
+
+| Licenza minima | 1 TB | 2 TB 
+
+
+| Spazio massimo gestito | 400 TB per nodo | 400 TB per nodo 
+|===

@@ -1,0 +1,86 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_vcenter.html 
+keywords: plan, planning, vmware vcenter, vcenter server, vcenter 
+summary: Esistono diversi requisiti di pianificazione relativi a VMware vCenter che è opportuno considerare. 
+---
+= ONTAP Select VMware vCenter server su ESXi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È necessario definire un account server vCenter e associarlo a un ruolo che contenga i privilegi amministrativi necessari.
+
+
+NOTE: È inoltre necessario il fully qualified domain name o l'indirizzo IP del vCenter server che gestisce gli host hypervisor ESXi su cui ONTAP Select è distribuito.
+
+
+
+== privilegi amministrativi
+
+Di seguito sono riportati i privilegi amministrativi minimi necessari per creare e gestire un cluster ONTAP Select.
+
+
+
+=== Datastore
+
+* Assegna spazio
+* Esplora datastore
+* Operazioni sui file di basso livello
+* Aggiornare i file della macchina virtuale
+* Aggiornare i metadati della macchina virtuale
+
+
+
+
+=== Host
+
+Configurazione::
++
+--
+* Configurazione di rete
+* Gestione del sistema
+
+
+--
+Operazioni locali::
++
+--
+* Crea macchina virtuale
+* Eliminare la macchina virtuale
+* Riconfigurare la macchina virtuale
+
+
+--
+
+
+
+
+=== Rete
+
+* Assegna rete
+
+
+
+
+=== Macchina virtuale
+
+Configurazione:: Tutti i privilegi della categoria.
+Interazione:: Tutti i privilegi della categoria.
+Inventario:: Tutti i privilegi della categoria.
+Provisioning:: Tutti i privilegi della categoria.
+
+
+
+
+=== vApp
+
+Tutti i privilegi della categoria.
+
+.Informazioni correlate
+link:https://docs.netapp.com/us-en/ontap-select/reference_plan_dep_vmware.html#ontap-select-deploy-vmware-vcenter-server-considerations["Scopri i privilegi VMware vSphere per vSAN ESA in vCenter"]

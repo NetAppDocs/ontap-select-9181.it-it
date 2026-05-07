@@ -1,0 +1,59 @@
+---
+sidebar: sidebar 
+permalink: concept_usecase_overview.html 
+keywords: ontap select, business use case overview, deployment, storage, development and testing 
+summary: ONTAP Select è adatto a diverse tipologie di applicazioni grazie alla flessibilità intrinseca offerta dalla virtualizzazione tramite hypervisor. 
+---
+= Esigenze aziendali e scenari di utilizzo di ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select è adatto a diverse tipologie di applicazioni grazie alla flessibilità intrinseca offerta dalla virtualizzazione tramite hypervisor.
+
+
+
+== Distribuzione
+
+A livello generale, è possibile implementare ONTAP Select in due modi diversi per quanto riguarda il carico di lavoro sui server host dell'hypervisor.
+
+
+
+=== Implementazione dedicata
+
+Con il modello di implementazione dedicato, una singola istanza di ONTAP Select viene eseguita sul server host. Nessun'altra elaborazione significativa viene eseguita sullo stesso host hypervisor.
+
+
+
+=== Implementazione collocata
+
+Con il modello di implementazione in colocation, ONTAP Select condivide l'host con altri carichi di lavoro. Nello specifico, sono presenti macchine virtuali aggiuntive, ognuna delle quali esegue in genere applicazioni di calcolo. Questi carichi di lavoro di calcolo sono locali al cluster ONTAP Select. Questo modello supporta requisiti applicativi e di implementazione specifici. Come per il modello di implementazione dedicato, ogni macchina virtuale ONTAP Select deve essere eseguita su un host hypervisor separato e dedicato.
+
+
+
+== Storage
+
+ONTAP Select può essere utilizzato come storage primario o secondario, a seconda delle esigenze aziendali.
+
+
+
+=== Storage primario
+
+In alcuni casi, è possibile scegliere di implementare ONTAP Select come storage primario. Le tipologie di implementazione variano a seconda delle caratteristiche del carico di lavoro delle applicazioni e degli obiettivi aziendali.
+
+
+
+=== Ripristino in caso di disastro e storage secondario
+
+È possibile utilizzare ONTAP Select per implementare uno storage aggiuntivo che potenzia le capacità di storage primario. Lo storage aggiuntivo può essere utilizzato per supportare le attività di disaster recovery e i piani di backup dei dati dell'organizzazione.
+
+
+
+== Sviluppo e test
+
+Durante la distribuzione di diverse applicazioni all'interno della tua organizzazione, puoi utilizzare ONTAP Select come parte integrante del processo complessivo di sviluppo e test delle applicazioni. Ad esempio, potresti aver bisogno di storage temporaneo per memorizzare i dati di input o output dei test. La durata di queste distribuzioni può variare in base alle caratteristiche e ai requisiti dell'applicazione.

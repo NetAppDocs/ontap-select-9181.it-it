@@ -1,0 +1,154 @@
+---
+sidebar: sidebar 
+permalink: concept_ots_overview.html 
+keywords: overview, software defined storage, sds, typical deployment, ontap 9 
+summary: ONTAP Select è una versione esclusivamente software di ONTAP che viene distribuita come macchina virtuale su un host hypervisor. Si affianca alla suite di offerte ONTAP FAS e AFF, nonché ad altre opzioni esclusivamente software come Cloud Volumes ONTAP. 
+---
+= Scopri ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select è una versione esclusivamente software di ONTAP che puoi distribuire come macchina virtuale su un host hypervisor. Si affianca alla suite principale di offerte ONTAP FAS, AFF e ASA, nonché ad altre opzioni esclusivamente software come Cloud Volumes ONTAP.
+
+ONTAP Select converte unità disco interne, NVMe, SSD o HDD e storage array esterno in un sistema storage flessibile con molti degli stessi vantaggi offerti dai sistemi di storage ONTAP dedicati. È possibile implementare ONTAP Select su nuovi server o sulla propria infrastruttura server esistente. ONTAP Select è facile da gestire e utilizza lo stesso software di gestione delle soluzioni basate su ONTAP, il che significa una riduzione dei costi operativi e delle esigenze di formazione.
+
+ONTAP Select si adatta alle tue esigenze di consumo di capacità con due modelli di licensing complementari: Capacity Tiers e il completamente flessibile Capacity Pools. Entrambi i modelli di licensing consentono di aumentare la capacità con incrementi di appena 1TB. Ad esempio, puoi iniziare con pochi terabyte e aggiungere capacità dinamicamente man mano che il tuo progetto cresce. Se utilizzi Capacity Pools, puoi ridistribuire la capacità come preferisci quando il tuo progetto è terminato.
+
+ONTAP Select è integrato in framework di gestione del cloud come VMware vSphere e Kernel-based Virtual Machine (KVM). Questo aiuta ad accelerare l'implementazione di nuovi progetti come servizi file, directory home, ambienti di sviluppo software e test delle applicazioni.
+
+SnapMirror software consente di spostare i dati tra storage ONTAP attraverso il cloud ibrido, in modo da poter accedere facilmente ai dati dove si desidera. Ad esempio, è possibile creare rapidamente un ambiente per testare un'idea. Successivamente, è possibile spostare il progetto su una piattaforma di storage dedicata per la distribuzione in produzione o renderlo più accessibile nel cloud come parte di un flusso di lavoro di sviluppo.
+
+
+
+== Storage software-defined
+
+L'implementazione e l'erogazione di servizi IT tramite software consentono agli amministratori di predisporre rapidamente le risorse con una velocità e un'agilità prima impensabili. Man mano che i moderni data center passano a un'architettura software-defined infrastructure (SDI), è possibile separare le risorse IT più preziose dall'infrastruttura fisica sottostante, garantendo flessibilità, scalabilità e programmabilità.
+
+In un mondo dominato dalle commodity, dove i dati sono frammentati in silos di storage ad accesso diretto (DAS), la mobilità dei dati e la gestione dei dati sono diventate problematiche sempre più complesse. Lo storage software-defined (SDS) si è affermato come una componente importante del panorama SDI per affrontare queste e altre problematiche.
+
+ONTAP Select è la soluzione NetApp per il mercato SDS. ONTAP Select offre funzionalità di gestione dello storage di livello enterprise al data center software-defined ed estende l'architettura NetApp Data Fabric ai casi d'uso edge più estremi, inclusi l'Internet of Things (IoT) e i server tattici.
+
+
+
+== Due componenti software
+
+ONTAP Select è composto da due componenti software principali:
+
+
+
+=== nodo ONTAP Select
+
+Un ONTAP Select cluster è composto da uno, due, quattro, sei, otto, dieci o dodici nodi. Ogni nodo del cluster viene distribuito come macchina virtuale separata ed esegue una versione appositamente progettata del software ONTAP 9.
+
+
+
+=== ONTAP Select Deploy utilità di amministrazione
+
+L'utility di amministrazione Deploy viene fornita e installata come macchina virtuale Linux separata. È necessario utilizzare l'utility per distribuire i cluster ONTAP Select in un ambiente di produzione. Una versione aggiornata dell'immagine del nodo ONTAP Select è inclusa nell'utility Deploy.
+
+
+NOTE: L'utility di amministrazione Deploy non ha un numero di versione separato. Deploy ha lo stesso numero di versione della release ONTAP Select associata. Tuttavia, ogni aggiornamento dell'utility Deploy all'interno di una specifica release ONTAP Select ha un numero di build univoco.
+
+
+
+== Illustrazione di una tipica implementazione
+
+La figura seguente illustra l'utilità di amministrazione NetApp ONTAP Select Deploy utilizzata per implementare e supportare un cluster ONTAP Select a quattro nodi. L'utilità Deploy e i nodi ONTAP Select vengono eseguiti come macchine virtuali separate su host hypervisor dedicati.
+
+image:ots_architecture.png["Illustra un cluster ONTAP Select a quattro nodi creato con l'utilità di amministrazione Deploy."]
+
+
+
+== FlexCache write-back con ONTAP Select
+
+ONTAP Select supporta i volumi cache FlexCache con write-back. Le prestazioni complessive di un'istanza ONTAP Select sono paragonabili a quelle di un sistema ONTAP entry-level.
+
+FlexCache cache volumi cache con write-back hanno i seguenti requisiti con ONTAP Select:
+
+* Utilizzare ONTAP Select su un'istanza di medie dimensioni (8-core) o di grandi dimensioni (16-core).
+* Utilizzare unità a stato solido con supporto NVMe. Lo storage con supporto SAS ha prestazioni inferiori rispetto allo storage con supporto NVMe per ONTAP Select.
+* Testare ONTAP Select per la funzionalità di write-back di FlexCache prima di avviare la distribuzione. La funzionalità di write-back di FlexCache non è consigliata per un numero elevato di file di piccole dimensioni.
+
+
+ONTAP Select non supporta FlexCache cache volumi cache con write-back su istanze di piccole dimensioni (4-core). Inoltre, ONTAP Select non supporta FlexCache origin volumi con write-back su istanze di piccole, medie o grandi dimensioni.
+
+link:https://docs.netapp.com/us-en/ontap/flexcache-writeback/flexcache-write-back-guidelines.html["Scopri la funzionalità di scrittura ONTAP FlexCache"^]
+
+
+
+== Confronta ONTAP Select e ONTAP 9
+
+Sia ONTAP basato su hardware che ONTAP Select offrono soluzioni di storage di livello enterprise. Tuttavia, poiché sono progettati e implementati in modo diverso, ciascuno può soddisfare requisiti aziendali e scenari di utilizzo differenti. Dovresti familiarizzare con le principali differenze tra le piattaforme prima di pianificare un'implementazione di ONTAP Select.
+
+
+
+=== Architettura HA differente
+
+A seconda del numero di nodi definiti in un cluster, ONTAP Select offre una funzionalità HA. Ad esempio, un cluster a quattro nodi è composto da due coppie HA. L'architettura HA utilizzata con ONTAP Select si basa su un modello di storage non condiviso. Ovvero, un nodo in una coppia HA non può accedere direttamente allo storage di proprietà dell'altro nodo. Questa progettazione può influire su alcune caratteristiche operative di ONTAP Select.
+
+
+
+=== Licensing della capacità
+
+ONTAP Select introduce un modello di licensing basato sul consumo. È necessario acquistare una licenza con capacità di storage per ciascun nodo o Capacity Pool condiviso quando si implementa un cluster ONTAP Select in un ambiente di produzione. Utilizzando l'utility Deploy, è necessario applicare i file di licenza che stabiliscono la capacità di storage per i nodi del cluster.
+
+
+
+=== Licenze delle funzionalità ONTAP
+
+Ogni nodo in un cluster ONTAP Select è automaticamente dotato di licenza per l'utilizzo di diverse funzionalità ONTAP. Non è necessario installare o applicare manualmente queste licenze delle funzionalità.
+
+
+
+=== Funzionalità ONTAP non supportate in ONTAP Select
+
+Diverse funzionalità di ONTAP non sono supportate da ONTAP Select. Nella maggior parte dei casi, queste funzionalità richiedono hardware speciale che non è disponibile nell'ambiente virtualizzato di ONTAP Select.
+
+* Aggiornamenti automatici per Autonomous Ransomware Protection (ARP)
++
+
+NOTE: A partire da ONTAP Select 9.16.1, sono supportati gli aggiornamenti manuali di ARP e la licenza della funzionalità ARP è inclusa nel NetApp License File (NLF).
+
+* Spazio IP del cluster
++
+Qualsiasi modifica allo spazio IP del cluster, inclusa l'aggiunta o la rimozione di porte, virtual LAN (VLAN) o link aggregation group, non è supportata.
+
+* Fibre Channel
++
+Fibre Channel e Fibre Channel su Ethernet non sono supportati.
+
+* Monitor di stato
++
+Il monitoraggio tradizionale dello stato di salute utilizzato con un'implementazione ONTAP basata su hardware è specifico per i componenti hardware sottostanti. A causa dell'ambiente virtualizzato utilizzato con ONTAP Select, i monitor di stato di salute non sono attivi.
+
+* Gruppi di interfaccia
++
+I gruppi di interfacce non sono supportati.
+
+* Gestore delle chiavi multi-tenant (MTKM)
+* supporto offload NIC
++
+A causa dell'ambiente virtualizzato utilizzato con ONTAP Select, la funzionalità di offload della scheda di rete non è supportata.
+
+* Drive di crittografia storage NetApp
+* Proprietà della porta ONTAP
++
+La modifica delle proprietà delle porte ONTAP, tra cui velocità, duplex e controllo di flusso, non è supportata.
+
+* Processori di servizi
+* migrazione SVM
+* SnapLock Compliance
+* SnapMirror active sync
+* VMware HCX
+
+
+.Informazioni correlate
+* link:reference_lic_ontap_features.html#enabled-ontap-features["Scopri le funzionalità ONTAP abilitate per impostazione predefinita"]
+* link:concept_lic_evaluation.html["Scopri le opzioni di licenza di ONTAP Select"]
+

@@ -1,0 +1,35 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_robo.html 
+keywords: plan, planning, remote and branch office, robo 
+summary: 'È possibile implementare ONTAP Select in un ambiente di uffici remoti/filiali (ROBO). Nell"ambito della pianificazione di un"implementazione ROBO, è necessario selezionare la configurazione che supporta i propri obiettivi.' 
+---
+= ONTAP Select implementazioni per uffici remoti e filiali
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È possibile implementare ONTAP Select in un ambiente di uffici remoti/filiali (ROBO). Nell'ambito della pianificazione di un'implementazione ROBO, è necessario selezionare la configurazione che supporta i propri obiettivi.
+
+Sono disponibili due configurazioni principali quando si implementa ONTAP Select in un ambiente ROBO.
+
+
+NOTE: È possibile utilizzare qualsiasi licenza VMware vSphere durante la distribuzione di ONTAP Select.
+
+.ONTAP Select cluster a due nodi con ONTAP HA
+Il cluster a due nodi ONTAP Select è composto da una coppia HA ed è ideale per implementazioni ROBO.
+
+.ONTAP Select cluster a nodo singolo con supporto VMware
+È possibile distribuire un cluster a nodo singolo ONTAP Select in un ambiente ROBO. Sebbene un nodo singolo non disponga di funzionalità HA native, è possibile distribuire il cluster in uno dei seguenti modi per garantire la protezione dello storage:
+
+* Archiviazione esterna condivisa tramite VMware HA
+* VMware vSAN
+
+
+
+NOTE: Se si utilizza vSAN, è necessaria una licenza VMware vSAN ROBO.

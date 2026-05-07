@@ -1,0 +1,38 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_restrictions.html 
+keywords: license, licensing, Capacity Pools, restrictions 
+summary: Di seguito vengono presentate le restrizioni che si applicano quando si utilizza il modello di licensing Capacity Pool. 
+---
+= Restrizioni di implementazione per le licenze ONTAP Select Capacity Pools
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Di seguito vengono presentate le restrizioni che si applicano quando si utilizza il modello di licensing Capacity Pool.
+
+.Modello di licensing coerente per cluster
+Tutti i nodi all'interno di un singolo ONTAP Select cluster devono utilizzare lo stesso modello di licensing, ovvero Capacity Tiers o Capacity Pools. Non è possibile combinare tipi di licensing diversi per i nodi all'interno di un singolo cluster.
+
+.Tutti i nodi di un cluster utilizzano la stessa istanza di License Manager
+Tutti i nodi con una licenza Capacity Pool in un cluster ONTAP Select devono utilizzare la stessa istanza di License Manager. Poiché all'interno di ogni istanza di Deploy è presente un'istanza di License Manager, questa restrizione ribadisce il requisito esistente secondo cui la stessa istanza di Deploy deve gestire tutti i nodi in un cluster.
+
+.Un pool di capacità per nodo
+Ciascun nodo può noleggiare spazio di archiviazione da un solo Capacity Pool. Un nodo non può utilizzare due o più pool.
+
+.Stesso pool per i nodi in una coppia HA
+Entrambi i nodi di una singola coppia HA devono noleggiare storage dallo stesso Capacity Pool. Tuttavia, coppie HA diverse all'interno dello stesso cluster possono noleggiare storage da pool diversi gestiti dallo stesso License Manager.
+
+.Durata della licenza di storage
+È necessario scegliere la durata della licenza al momento dell'acquisizione della licenza di storage da NetApp. Ad esempio, una licenza potrebbe essere valida per un anno.
+
+.Durata del lease dell'aggregato dati
+Quando un nodo ONTAP Select richiede un lease di archiviazione per un data aggregate, il License Manager fornisce un lease per una durata specifica in base alla configurazione del Capacity Pool. È possibile configurare la durata del lease per ciascun pool tra un'ora e sette giorni. La durata predefinita del lease è di 24 ore.
+
+.Indirizzo IP statico assegnato a Deploy
+È necessario assegnare un indirizzo IP statico all'utilità di amministrazione Deploy quando si utilizza il modello di licensing Capacity Pools.

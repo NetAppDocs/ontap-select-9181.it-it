@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_serial_number.html 
+keywords: license, licensing, Capacity Pools, node serial numbers 
+summary: Con il modello di licensing Capacity Tiers, il numero di serie del nodo a nove cifre corrisponde al numero di serie della licenza assegnato al nodo. Tuttavia, i numeri di serie assegnati ai nodi che utilizzano il modello di licensing Capacity Pools hanno un formato diverso. 
+---
+= Numeri di serie dei nodi per ONTAP Select licensing model
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Con il modello di licensing Capacity Tiers, il numero di serie del nodo a nove cifre corrisponde al numero di serie della licenza assegnato al nodo. Tuttavia, i numeri di serie assegnati ai nodi che utilizzano il modello di licensing Capacity Pools hanno un formato diverso.
+
+Il numero di serie di un nodo che utilizza la licenza Capacity Pools ha il seguente formato:
+
+`999 ppppppppp nnnnnnnn`
+
+
+NOTE: Gli spazi sono stati aggiunti per chiarezza, ma non fanno parte del numero di serie vero e proprio.
+
+La tabella seguente descrive ogni sezione del numero di serie del nodo da sinistra a destra.
+
+[cols="15,85"]
+|===
+| Sezione | Descrizione 
+
+
+| '999' | Valore costante a tre cifre riservato da NetApp. 
+
+
+| ppppppppp | Numero di serie di licenza variabile a nove cifre assegnato al pool di capacità da NetApp 
+
+
+| nnnnnnnn | Valore variabile a otto cifre generato dal License Manager per ciascun nodo che utilizza il Capacity Pool 
+|===
+
+CAUTION: Quando si apre un caso con NetApp support relativo a un nodo che utilizza una licenza Capacity Pool, è necessario fornire il numero di serie della licenza Capacity Pool a nove cifre. Non è possibile fornire il numero di serie completo del nodo a venti cifre. È possibile ricavare il numero di serie della licenza dal numero di serie del nodo saltando le prime tre cifre del numero di serie del nodo ('999') ed estraendo le nove cifre successive (ppppppppp).

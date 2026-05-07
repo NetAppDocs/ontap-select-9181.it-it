@@ -1,0 +1,36 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_workflow.html 
+keywords: license, licensing, purchase, purchasing, workflow 
+summary: È possibile seguire una procedura per acquistare e applicare una licenza per la propria implementazione di ONTAP Select. 
+---
+= Flusso di lavoro per l'acquisto di una licenza ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Il flusso di lavoro seguente illustra il processo di acquisto e applicazione di una licenza per la tua implementazione di ONTAP Select. Al momento dell'acquisto di una licenza, è necessario selezionare il modello di licensing e la capacità di archiviazione.
+
+La procedura esatta varia a seconda che si utilizzi una licenza Capacity Tier o Capacity Pool:
+
+Numero di serie della licenza a nove cifre:: Il numero di serie si applica a un nodo (Capacity Tiers) o a un pool di storage (Capacity Pools)
+ID di blocco licenza:: È necessario disporre del License Lock ID per la propria istanza Deploy quando si utilizza una licenza Capacity Pool
+Sito web per le licenze:: È possibile ottenere una licenza Capacity Tier e Capacity Pool su siti web diversi
+
+
+image:purchased_license_workflow.png["Descrive il processo utilizzato per acquistare e installare una licenza di storage per una distribuzione di produzione di ONTAP Select."]
+
+.E ora?
+Scopri le considerazioni per il dimensionamento di una licenza ONTAP Select:
+
+* link:sizing-capacity-tier-license.html["Licenza Capacity Tiers"]
+* link:sizing-capacity-pool-license.html["Licenza Capacity Pools"]
+
+
+.Informazioni correlate
+link:task_adm_licenses.html["Scopri come gestire le licenze ONTAP Select"]

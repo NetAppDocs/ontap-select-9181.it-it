@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_before.html 
+keywords: administer, administering, web, before you begin 
+summary: 'Dopo aver creato un ONTAP Select cluster, è possibile supportare l"implementazione eseguendo diverse attività amministrative. Ci sono alcune considerazioni generali di cui essere consapevoli.' 
+---
+= Prima di iniziare ad amministrare ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Dopo aver creato un ONTAP Select cluster, è possibile supportare l'implementazione eseguendo diverse attività amministrative. Ci sono alcune considerazioni generali di cui essere consapevoli.
+
+In generale, le procedure che è possibile eseguire tramite l'interfaccia web di Deploy rientrano in una delle tre categorie.
+
+.Implementa un ONTAP Select cluster
+È possibile implementare un cluster a nodo singolo o multi-nodo. Vedere link:task_deploy_cluster.html["Implementa un ONTAP Select cluster"] per ulteriori informazioni.
+
+.Eseguire una procedura con un ONTAP Select cluster
+Le procedure amministrative sono organizzate in varie categorie, come _Security_ e _Clusters_.
+
+.Eseguire una procedura sull'utility Deploy
+Esistono diverse procedure specifiche per Deploy (come la modifica della password dell'amministratore).
+
+
+
+== Amministra ONTAP Select
+
+Sono disponibili diverse procedure amministrative a supporto di ONTAP Select. Inoltre, esistono procedure specifiche per l'utility amministrativa Deploy. Le più importanti di queste procedure sono presentate di seguito. In generale, tutte utilizzano l'interfaccia utente web di Deploy.
+
+
+NOTE: È inoltre possibile link:https://docs.netapp.com/us-en/ontap-select/task_cli_signing_in.html["utilizzare l'interfaccia a riga di comando"] amministrare ONTAP Select.
+
+
+
+== Eseguire configurazioni ONTAP aggiuntive
+
+Dopo che un cluster ONTAP Select è stato distribuito, puoi configurare e gestire il cluster proprio come faresti con un sistema ONTAP basato su hardware. Ad esempio, puoi utilizzare ONTAP System Manager o la ONTAP CLI per configurare il cluster ONTAP Select.
+
+.Software client NetApp
+È possibile connettersi a ONTAP Select utilizzando i seguenti software client NetApp supportati:
+
+* ONTAP System Manager
+* Active IQ Unified Manager
+* OnCommand Insight
+* OnCommand Workflow Automation
+* SnapCenter
+* Console di archiviazione virtuale per VMware vSphere
+
+
+Per identificare le versioni supportate del software client, consultare la link:https://mysupport.netapp.com/matrix/["Strumento Interoperability Matrix Tool"^]. Se il software client supporta ONTAP 9, la stessa versione è supportata anche da ONTAP Select.
+
+
+NOTE: L'utilizzo di SnapCenter e dei relativi plug-in richiede licenze basate su server. La licenza dei plug-in SnapCenter per il sistema di storage non è attualmente supportata con ONTAP Select.
+
+Qualsiasi altro NetApp client software non incluso nell'elenco non è supportato da ONTAP Select.
+
+.Possibili opzioni di configurazione
+Sono disponibili diverse opzioni per la configurazione del cluster, tra cui le seguenti:
+
+* Creazione della configurazione di rete
+* Disposizione degli aggregati
+* Creazione delle macchine virtuali di archiviazione dati (SVM)
+
+
+.Licenze acquistate con capacità di archiviazione
+Se hai deciso di non installare i file di licenza con la capacità di archiviazione durante la distribuzione del cluster ONTAP Select, devi acquisire e installare i file di licenza prima che il grace period scada per i cluster in esecuzione con una licenza acquistata.
+
+.Aggregati mirrorati
+L'utility di amministrazione Deploy crea dischi di riserva dati su ciascun nodo ONTAP Select dallo spazio di archiviazione dati utilizzabile (ad esempio, Pool0 e Pool1). Per implementare l'alta disponibilità dei dati su un cluster multi-nodo, è necessario creare un aggregato mirrorato utilizzando questi dischi di riserva.
+
+
+NOTE: Il takeover ad alta disponibilità è supportato solo quando gli aggregati di dati sono configurati come aggregati mirrorati.

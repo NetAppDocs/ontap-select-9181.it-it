@@ -1,0 +1,84 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_mirroring.html 
+keywords: ontap select, ha, high availability, synchronous replication, mirrored aggregates, write path, raid syncmirror, rsm 
+summary: 'Previeni la perdita di dati utilizzando RAID SyncMirror (RSM), aggregati mirrorati e il percorso di scrittura.' 
+---
+= ONTAP Select HA RSM e aggregati mirrorati
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Previeni la perdita di dati utilizzando RAID SyncMirror (RSM), aggregati mirrorati e il percorso di scrittura.
+
+
+
+== Replica sincrona
+
+Il modello HA di ONTAP si basa sul concetto di partner HA. ONTAP Select estende questa architettura nel mondo dei commodity server non condivisi, utilizzando la funzionalità RAID SyncMirror presente in ONTAP per replicare i blocchi di dati tra i nodi del cluster, fornendo due copie dei dati utente distribuite su una coppia HA.
+
+Un cluster a due nodi con un mediatore può estendersi su due data center. Per ulteriori informazioni, consultare la sezione link:reference_plan_best_practices.html#two-node-stretched-ha-metrocluster-sds-best-practices["Best practice per la coppia HA estesa a due nodi (MetroCluster SDS)"].
+
+
+
+== Aggregati mirrorati
+
+Un ONTAP Select cluster è composto da due a dodici nodi. Ogni coppia HA contiene due copie dei dati utente, sincronamente mirrorate tra i nodi su una rete IP. Questo mirroring è trasparente per l'utente ed è una proprietà dell'aggregato di dati, che viene configurata automaticamente durante il processo di creazione dell'aggregato di dati.
+
+Tutti gli aggregati in un ONTAP Select cluster devono essere mirrorati per garantire la disponibilità dei dati in caso di failover di un nodo e per evitare uno SPOF in caso di guasto hardware. Gli aggregati in un ONTAP Select cluster sono costituiti da dischi virtuali forniti da ciascun nodo della coppia HA e utilizzano i seguenti dischi:
+
+* Un set locale di dischi (fornito dal nodo ONTAP Select corrente)
+* Un set di dischi mirrorato (fornito dalla coppia HA del nodo corrente)
+
+
+
+NOTE: I dischi locali e di mirroring utilizzati per creare un aggregato mirrorato devono avere le stesse dimensioni. Questi aggregati sono denominati plex 0 e plex 1 (per indicare rispettivamente le coppie di mirror locale e remoto). I numeri di plex effettivi possono essere diversi nella vostra installazione.
+
+Questo approccio è fondamentalmente diverso dal modo in cui funzionano i cluster ONTAP standard. Ciò si applica a tutti i dischi root e dati all'interno del cluster ONTAP Select. L'aggregato contiene sia copie locali che copie mirror dei dati. Pertanto, un aggregato che contiene N dischi virtuali offre una capacità di archiviazione univoca equivalente a N/2 dischi, poiché la seconda copia dei dati risiede su dischi univoci separati.
+
+La figura seguente mostra una coppia HA all'interno di un cluster ONTAP Select. All'interno di questo cluster è presente un singolo aggregato (test) che utilizza lo storage di entrambi i partner HA. Questo aggregato di dati è composto da due set di dischi virtuali: un set locale, fornito dal nodo del cluster ONTAP Select (Plex 0), e un set remoto, fornito dal partner di failover (Plex 1).
+
+Plex 0 è il bucket che contiene tutti i dischi locali. Plex 1 è il bucket che contiene i dischi mirror, ovvero i dischi responsabili della memorizzazione di una seconda copia replicata dei dati utente. Il nodo che possiede l'aggregato contribuisce con dischi a Plex 0, e la coppia HA di quel nodo contribuisce con dischi a Plex 1.
+
+Nella figura seguente è rappresentato un aggregato mirrorato composto da due dischi. Il contenuto di questo aggregato è mirrorato tra i nostri due nodi del cluster, con il disco locale NET-1.1 posizionato nel bucket Plex 0 e il disco remoto NET-2.1 posizionato nel bucket Plex 1. In questo esempio, l'aggregato test è di proprietà del nodo del cluster a sinistra e utilizza il disco locale NET-1.1 e il disco mirror del partner HA NET-2.1.
+
+*ONTAP Select aggregato mirrorato*image:DDHA_03.jpg["ONTAP Select aggregato mirrorato"]
+
+
+NOTE: Quando un cluster ONTAP Select viene distribuito, tutti i dischi virtuali presenti sul sistema vengono assegnati automaticamente al plex corretto, senza richiedere alcun intervento aggiuntivo da parte dell'utente. Ciò impedisce l'assegnazione accidentale dei dischi a un plex errato e garantisce una configurazione ottimale dei dischi mirror.
+
+
+
+== Percorso di scrittura
+
+La replica sincrona dei blocchi di dati tra i nodi del cluster e il requisito di assenza di perdita di dati in caso di guasto del sistema hanno un impatto significativo sul percorso seguito da una scrittura in ingresso durante la sua propagazione attraverso un cluster ONTAP Select. Questo processo si compone di due fasi:
+
+* Riconoscimento
+* Destaging
+
+
+Le scritture su un volume di destinazione avvengono tramite una LIF dati e vengono registrate nella partizione NVRAM virtualizzata, presente su un disco di sistema del nodo ONTAP Select, prima di essere confermate al client. In una configurazione HA, si verifica un passaggio aggiuntivo, perché queste scritture NVRAM vengono immediatamente replicate al partner HA del proprietario del volume di destinazione prima di essere confermate. Questo processo garantisce la coerenza del file system sul nodo partner HA, in caso di guasto hardware sul nodo originale.
+
+Dopo che la scrittura è stata confermata nella NVRAM, ONTAP sposta periodicamente il contenuto di questa partizione sul disco virtuale appropriato, un processo noto come destaging. Questo processo avviene una sola volta, sul nodo del cluster proprietario del volume di destinazione, e non sul partner HA.
+
+La figura seguente mostra il percorso di scrittura di una richiesta di scrittura in entrata verso un nodo ONTAP Select.
+
+*ONTAP Select workflow del percorso di scrittura* image:DDHA_04.jpg["Workflow del percorso di scrittura di ONTAP Select"]
+
+La conferma di ricezione della scrittura include i seguenti passaggi:
+
+* Le scritture entrano nel sistema attraverso un'interfaccia logica di proprietà del nodo ONTAP Select A.
+* Le operazioni di scrittura vengono memorizzate nella NVRAM del nodo A e replicate sulla coppia HA, nodo B.
+* Una volta che la richiesta di I/O è presente su entrambi i nodi HA, la richiesta viene quindi confermata al client.
+
+
+Il destaging di ONTAP Select dalla NVRAM all'aggregato di dati (ONTAP CP) include i seguenti passaggi:
+
+* Le operazioni di scrittura vengono spostate dalla NVRAM virtuale all'aggregato di dati virtuale.
+* Il motore mirror replica i blocchi in modo sincrono su entrambi i plex.
+

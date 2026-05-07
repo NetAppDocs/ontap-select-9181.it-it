@@ -1,0 +1,133 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_dep_general.html 
+keywords: plan, planning, ontap select deploy, general requirements 
+summary: 'Esistono diversi requisiti generali da tenere in considerazione durante la pianificazione dell"installazione dell"utilità di amministrazione ONTAP Select Deploy.' 
+---
+= ONTAP Select Deploy requisiti generali e pianificazione
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Esistono diversi requisiti generali da tenere in considerazione durante la pianificazione dell'installazione dell'utilità di amministrazione ONTAP Select Deploy.
+
+
+
+== Associazione dell'utilità Deploy con i cluster ONTAP Select
+
+Hai a disposizione diverse opzioni per associare un'istanza dell'utilità Deploy ai cluster ONTAP Select.
+
+
+NOTE: In tutti gli scenari di implementazione, un singolo cluster ONTAP Select e i nodi nel cluster possono essere gestiti da una sola istanza dell'utilità di amministrazione Deploy. Un cluster non può essere gestito da due o più istanze diverse dell'utilità Deploy.
+
+.Un'istanza dell'utilità per ogni ONTAP Select cluster
+È possibile distribuire e gestire ciascun cluster ONTAP Select utilizzando un'istanza dedicata dell'utility Deploy. Grazie a questa configurazione uno a uno, si ottiene una netta separazione tra ogni coppia utility-cluster. Questa configurazione offre un elevato livello di isolamento con domini di errore più piccoli.
+
+.Un'istanza dell'utilità per più cluster ONTAP Select
+È possibile distribuire e gestire più cluster ONTAP Select nella propria organizzazione utilizzando una singola istanza dell'utilità Deploy. Con questa configurazione uno-a-molti, tutti i dati di elaborazione e configurazione vengono gestiti dalla stessa istanza dell'utilità Deploy.
+
+
+NOTE: Una singola istanza dell'utility Deploy può amministrare fino a 400 nodi ONTAP Select o 100 cluster.
+
+
+
+== Requisiti relativi all'ambiente KVM
+
+Prima di installare l'utilità di amministrazione Deploy in un ambiente hypervisor KVM, è necessario esaminare i requisiti di base e prepararsi per la distribuzione.
+
+.Requisiti e restrizioni per un'implementazione
+Esistono diversi requisiti e restrizioni da tenere in considerazione quando si installa l'utility ONTAP Select Deploy in un ambiente KVM.
+
+.Requisiti hardware del server host KVM Linux
+Esistono diversi requisiti minimi di risorse che l'hypervisor KVM Linux deve soddisfare. Verificare che gli host su cui ONTAP Select è distribuito soddisfino i seguenti requisiti di base:
+
+* Server Linux:
++
+** L'hardware e il software devono essere a 64 bit
+** Il server deve essere conforme alle stesse versioni supportate definite per un nodo ONTAP Select
+
+
+* CPU virtuali (2)
+* Memoria virtuale (4GB)
+* Spazio di archiviazione (40GB)
+* Il protocollo Dynamic Host Configuration Protocol (DHCP) è abilitato (è possibile assegnare anche un indirizzo IP statico)
+
+
+.connettività di rete
+Verificare che l'interfaccia di rete della macchina virtuale Deploy sia configurata e possa connettersi agli host ONTAP Select che gestisce.
+
+.Supporto per IP versione 4
+ONTAP Select Deploy supporta solo la versione 4 del protocollo IP (IPv4). La versione 6 del protocollo IP (IPv6) non è supportata. Questa limitazione influisce su ONTAP Select nei seguenti modi:
+
+* È necessario assegnare un indirizzo IPv4 all'interfaccia LIF di gestione della VM di Deploy.
+* Deploy non può creare nodi ONTAP Select configurati per utilizzare IPv6 sulle LIF di ONTAP.
+
+
+
+
+== Informazioni di configurazione richieste
+
+Nell'ambito della pianificazione dell'implementazione, è necessario determinare le informazioni di configurazione richieste prima di installare l'utilità di amministrazione ONTAP Select Deploy.
+
+.Nome della VM di distribuzione
+Il nome da utilizzare per la macchina virtuale.
+
+.Nome dell'host KVM Linux
+L'host KVM Linux su cui è installata l'utilità Deploy.
+
+.Nome del pool di storage
+Il pool di storage che contiene i file della VM (sono necessari circa 40GB).
+
+.Rete per la macchina virtuale
+La rete a cui è connessa la VM di distribuzione.
+
+
+
+== Informazioni facoltative sulla configurazione di rete
+
+La macchina virtuale di distribuzione viene configurata di default utilizzando il DHCP. Tuttavia, se necessario, è possibile configurare manualmente l'interfaccia di rete per la macchina virtuale.
+
+.Nome host
+Il nome dell'host.
+
+.Indirizzo IP dell'host
+L'indirizzo IPv4 statico.
+
+.Maschera di sottorete
+La maschera di sottorete, che si basa sulla rete di cui fa parte la VM.
+
+.Gateway
+Il gateway o router predefinito.
+
+.DNS server primario
+Il domain name server primario.
+
+.DNS server secondario
+Il domain name server secondario.
+
+.Domini di ricerca
+I domini di ricerca da utilizzare.
+
+
+
+== Autenticazione tramite l'archivio delle credenziali
+
+L'archivio delle credenziali di ONTAP Select Deploy è un database che contiene le informazioni sugli account. Deploy utilizza le credenziali degli account per eseguire l'autenticazione dell'host durante la creazione e la gestione del cluster. Dovresti essere a conoscenza di come viene utilizzato l'archivio delle credenziali durante la pianificazione di un deployment di ONTAP Select.
+
+
+NOTE: Le informazioni dell'account vengono memorizzate in modo sicuro nel database utilizzando l'algoritmo di crittografia AES e l'algoritmo di hashing SHA-256.
+
+.Tipi di credenziali
+Sono supportati i seguenti tipi di credenziali:
+
+* Host utilizzato per autenticare un host hypervisor come parte della distribuzione di un nodo ONTAP Select direttamente su VMware ESXi
+* vCenter Utilizzato per autenticare un server vCenter come parte della distribuzione di un nodo ONTAP Select su ESXi quando l'host è gestito da VMware vCenter
+
+
+.Accesso
+L'archivio delle credenziali viene consultato internamente durante l'esecuzione di normali attività amministrative con Deploy, come l'aggiunta di un host hypervisor. È inoltre possibile gestire l'archivio delle credenziali direttamente tramite l'interfaccia utente web e la CLI di Deploy.

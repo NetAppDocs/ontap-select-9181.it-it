@@ -1,0 +1,71 @@
+---
+sidebar: sidebar 
+permalink: reference_chk_deploy_req_info.html 
+keywords: ontap select, deploy, pre-installation, vmware 
+summary: 'Prima di installare l"utilità di amministrazione Deploy in un ambiente VMware, esaminare i requisiti di base e prepararsi per una corretta implementazione.' 
+---
+= Informazioni necessarie per l'installazione dell'utility ONTAP Select Deploy
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Prima di installare l'utilità di amministrazione Deploy in un ambiente hypervisor, esaminare le informazioni di configurazione richieste e le informazioni di configurazione di rete facoltative per prepararsi a una corretta distribuzione.
+
+
+
+== Informazioni di configurazione richieste
+
+Nell'ambito della pianificazione dell'implementazione, è necessario determinare le informazioni di configurazione richieste prima di installare l'utilità di amministrazione ONTAP Select Deploy.
+
+[cols="40,60"]
+|===
+| Informazioni richieste | Descrizione 
+
+
+| Nome della macchina virtuale Deploy | Identificativo da utilizzare per la macchina virtuale. 
+
+
+| Nome dell'host dell'hypervisor | Identificativo dell'host hypervisor VMware ESXi o KVM su cui è installata l'utilità di distribuzione. 
+
+
+| Nome dell'archivio dati | Identificativo per l'archivio dati dell'hypervisor che contiene i file della macchina virtuale (sono necessari circa 40GB). 
+
+
+| Rete per la macchina virtuale | Identificativo della rete a cui è connessa la macchina virtuale Deploy. 
+|===
+
+
+== Informazioni facoltative sulla configurazione di rete
+
+La macchina virtuale Deploy è configurata di default tramite DHCP. Tuttavia, se necessario, è possibile configurare manualmente l'interfaccia di rete per la macchina virtuale.
+
+[cols="35,65"]
+|===
+| Informazioni di rete | Descrizione 
+
+
+| Nome host | Identificativo della macchina host. 
+
+
+| Indirizzo IP dell'host | Indirizzo IPv4 statico della macchina host. 
+
+
+| Maschera di sottorete | Maschera di sottorete, basata sulla rete di cui fa parte la macchina virtuale. 
+
+
+| Gateway | Gateway o router predefinito. 
+
+
+| DNS server primario | Server DNS primario. 
+
+
+| DNS server secondario | Server DNS secondario. 
+
+
+| Domini di ricerca | Elenco dei domini di ricerca da utilizzare. 
+|===
