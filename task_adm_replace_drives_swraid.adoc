@@ -21,6 +21,7 @@ NOTE: Sia la rimozione dell'unità guasta che l'aggiunta di una nuova unità (co
 
 
 
+[[identify-the-failed-drive]]
 == Identifica l'unità guasta
 
 Quando un'unità si guasta, è necessario utilizzare la ONTAP CLI per identificare il disco guasto.
@@ -86,6 +87,7 @@ NET-1.4 893.3GB - - SSD broken - sti-rx2540-346a'
 ====
 
 
+[[remove-the-failed-drive]]
 == Rimuovere l'unità guasta
 
 Dopo aver identificato l'unità guasta, rimuovere il disco.
@@ -211,6 +213,7 @@ image:ST_26.jpg["Avvertimento"]
 ====
 
 
+[[add-the-new-spare-drive]]
 == Aggiungi il nuovo disco spare
 
 Dopo aver rimosso l'unità guasta, aggiungere il disco spare.

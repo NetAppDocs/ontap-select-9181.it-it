@@ -18,12 +18,14 @@ Sebbene REST definisca un insieme comune di tecnologie e best practice, i dettag
 
 
 
+[[hypervisor-host-versus-ontap-select-node]]
 == Host hypervisor rispetto al nodo ONTAP Select
 
 Un _host hypervisor_ è la piattaforma hardware principale che ospita una macchina virtuale ONTAP Select. Quando una macchina virtuale ONTAP Select viene distribuita e attivata su un host hypervisor, la macchina virtuale è considerata un _nodo ONTAP Select_. Con la versione 3 della REST API Deploy, gli oggetti host e nodo sono separati e distinti. Questo consente una relazione uno-a-molti, dove uno o più nodi ONTAP Select possono essere eseguiti sullo stesso host hypervisor.
 
 
 
+[[object-identifiers]]
 == Identificatori degli oggetti
 
 A ogni istanza o oggetto risorsa viene assegnato un identificatore univoco al momento della creazione. Questi identificatori sono univoci a livello globale all'interno di una specifica istanza di ONTAP Select Deploy. Dopo aver effettuato una chiamata API che crea una nuova istanza di oggetto, il valore id associato viene restituito al chiamante nell' `location`intestazione della risposta HTTP. È possibile estrarre l'identificatore e utilizzarlo nelle chiamate successive quando si fa riferimento all'istanza della risorsa.
@@ -33,12 +35,14 @@ NOTE: Il contenuto e la struttura interna degli identificatori degli oggetti pos
 
 
 
+[[request-identifiers]]
 == Identificativi della richiesta
 
 A ogni richiesta API andata a buon fine viene assegnato un identificatore univoco. L'identificatore viene restituito nell' `request-id`intestazione della risposta HTTP associata. È possibile utilizzare un identificatore di richiesta per fare riferimento collettivamente alle attività di una singola specifica transazione richiesta-risposta API. Ad esempio, è possibile recuperare tutti i messaggi di evento per una transazione in base all'ID della richiesta.
 
 
 
+[[synchronous-and-asynchronous-calls]]
 == Chiamate sincrone e asincrone
 
 Esistono due modi principali in cui un server esegue una richiesta HTTP ricevuta da un client:
@@ -49,6 +53,7 @@ Esistono due modi principali in cui un server esegue una richiesta HTTP ricevuta
 
 
 
+[[confirm-the-completion-of-a-long-running-job]]
 == Confermare il completamento di un lavoro di lunga durata
 
 In genere, qualsiasi operazione che richieda molto tempo per essere completata viene elaborata in modo asincrono tramite un'attività in background sul server. Con la Deploy REST API, ogni attività in background è associata a un oggetto Job che ne tiene traccia e fornisce informazioni, come lo stato corrente. Un oggetto Job, incluso il suo identificatore univoco, viene restituito nella risposta HTTP dopo la creazione di un'attività in background.
@@ -63,6 +68,7 @@ Oltre all'utilizzo dell'oggetto Job, esistono altri modi per determinare il succ
 
 
 
+[[security]]
 == Sicurezza
 
 L'API Deploy utilizza le seguenti tecnologie di sicurezza:

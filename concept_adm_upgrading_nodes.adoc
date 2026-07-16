@@ -21,6 +21,7 @@ CAUTION: Non è possibile utilizzare l'utilità di amministrazione Deploy per es
 
 
 
+[[general-procedure]]
 == Procedura generale
 
 A high-level, per aggiornare un nodo ONTAP Select esistente, è necessario seguire i passaggi seguenti.
@@ -39,6 +40,7 @@ Esaminare la link:reference_release_notes.html["note di rilascio"] per ulteriori
 
 
 
+[[revert-an-ontap-select-node]]
 == Ripristina un nodo ONTAP Select
 
 Non è possibile ripristinare un nodo ONTAP Select a una versione precedente a quella su cui è stato originariamente installato. Ad esempio:
@@ -49,6 +51,7 @@ ONTAP Select 9.17.1 viene installato inizialmente:: Il ripristino non è possibi
 
 
 
+[[use-the-vmxnet3-network-driver]]
 == Utilizzare il driver di rete VMXNET3
 
 VMXNET3 è il driver di rete predefinito incluso nelle nuove implementazioni di cluster su VMware ESXi. Se si aggiorna un nodo ONTAP Select esistente che esegue ONTAP Select 9.4 o versioni precedenti, il driver di rete non viene aggiornato automaticamente. È necessario aggiornarlo manualmente a VMXNET3. Si consiglia di contattare il supporto NetApp per assistenza con l'aggiornamento.

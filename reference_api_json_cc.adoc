@@ -18,6 +18,7 @@ Quando si crea o si elimina un ONTAP Select cluster utilizzando gli esempi di co
 
 
 
+[[single-node-cluster-on-esxi]]
 == cluster a nodo singolo su ESXi
 
 [source, json]
@@ -89,6 +90,7 @@ Quando si crea o si elimina un ONTAP Select cluster utilizzando gli esempi di co
 ----
 
 
+[[single-node-cluster-on-esxi-using-vcenter]]
 == cluster a nodo singolo su ESXi utilizzando vCenter
 
 [source, json]
@@ -165,6 +167,7 @@ Quando si crea o si elimina un ONTAP Select cluster utilizzando gli esempi di co
 ----
 
 
+[[single-node-cluster-on-kvm]]
 == cluster a nodo singolo su KVM
 
 [source, json]

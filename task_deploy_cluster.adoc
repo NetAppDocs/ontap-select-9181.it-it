@@ -23,6 +23,8 @@ TIP: È inoltre possibile link:https://docs.netapp.com/us-en/ontap-select/task_c
 
 
 
+[[step-1-prepare-for-the-deployment]]
+[[prepare-for-deploy]]
 == Fase 1: Prepararsi all'implementazione
 
 Preparatevi al deployment per assicurarvi che abbia successo.
@@ -87,6 +89,8 @@ Se stai implementando un cluster a più nodi, dovresti avere familiarità con il
 
 
 
+[[step-2-create-a-single-node-or-multi-node-cluster]]
+[[create-single-or-multi-node-cluster]]
 == Passaggio 2: Creare un cluster a nodo singolo o multinodo
 
 È possibile utilizzare l'interfaccia utente web di ONTAP Select Deploy per distribuire un cluster ONTAP Select a nodo singolo o multinodo.
@@ -196,6 +200,7 @@ La pagina viene aggiornata automaticamente a intervalli regolari.
 ====
 
 
+[[step-3-complete-the-deployment]]
 == Passaggio 3: Completare la distribuzione
 
 Dopo aver distribuito il cluster, link:https://docs.netapp.com/us-en/ontap/system-admin/setup-autosupport-task.html["confermare che la funzionalità AutoSupport di ONTAP Select sia configurata"^] e poi link:task_cli_clusters.html["eseguire il backup dei dati di configurazione di ONTAP Select Deploy"].

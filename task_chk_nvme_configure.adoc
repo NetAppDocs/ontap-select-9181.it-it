@@ -20,6 +20,7 @@ Utilizzare VMDirectPath I/O Pass-through sui dispositivi NVMe per massimizzare l
 
 
 
+[[step-1-configure-the-host]]
 == Passaggio 1: Configurare l'host
 
 Configurare l'host ESXi o KVM in modo che riconosca le unità.
@@ -109,6 +110,7 @@ image:nvme_03.png["Riavvia questo host"]
 
 
 
+[[step-2-install-the-ontap-select-deploy-utility]]
 == Passaggio 2: Installare l'utilità ONTAP Select Deploy
 
 Dopo aver preparato gli host, è possibile installare l'utilità ONTAP Select Deploy. Deploy guida l'utente nella creazione di cluster di storage ONTAP Select sui nuovi host preparati. Durante questo processo, Deploy rileva la presenza delle unità NVMe configurate per il pass-through e le seleziona automaticamente per l'utilizzo come dischi dati ONTAP. È possibile modificare la selezione predefinita, se necessario.

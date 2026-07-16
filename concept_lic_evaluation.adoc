@@ -38,6 +38,7 @@ Ci sono diverse considerazioni da fare quando si implementa e si supporta un clu
 
 
 
+[[licensing-characteristics]]
 == Caratteristiche della licenza
 
 La licenza di valutazione ONTAP Select presenta le seguenti caratteristiche:
@@ -53,6 +54,7 @@ La licenza di valutazione ONTAP Select presenta le seguenti caratteristiche:
 
 
 
+[[upgrade-to-a-production-license]]
 == Passa a una licenza di produzione
 
 È possibile aggiornare un cluster ONTAP Select per utilizzare una licenza di produzione. È necessario tenere presente le seguenti limitazioni:

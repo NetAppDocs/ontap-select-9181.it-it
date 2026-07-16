@@ -18,6 +18,7 @@ Previeni la perdita di dati utilizzando RAID SyncMirror (RSM), aggregati mirrora
 
 
 
+[[synchronous-replication]]
 == Replica sincrona
 
 Il modello HA di ONTAP si basa sul concetto di partner HA. ONTAP Select estende questa architettura nel mondo dei commodity server non condivisi, utilizzando la funzionalità RAID SyncMirror presente in ONTAP per replicare i blocchi di dati tra i nodi del cluster, fornendo due copie dei dati utente distribuite su una coppia HA.
@@ -26,6 +27,7 @@ Un cluster a due nodi con un mediatore può estendersi su due data center. Per u
 
 
 
+[[mirrored-aggregates]]
 == Aggregati mirrorati
 
 Un ONTAP Select cluster è composto da due a dodici nodi. Ogni coppia HA contiene due copie dei dati utente, sincronamente mirrorate tra i nodi su una rete IP. Questo mirroring è trasparente per l'utente ed è una proprietà dell'aggregato di dati, che viene configurata automaticamente durante il processo di creazione dell'aggregato di dati.
@@ -54,6 +56,7 @@ NOTE: Quando un cluster ONTAP Select viene distribuito, tutti i dischi virtuali 
 
 
 
+[[write-path]]
 == Percorso di scrittura
 
 La replica sincrona dei blocchi di dati tra i nodi del cluster e il requisito di assenza di perdita di dati in caso di guasto del sistema hanno un impatto significativo sul percorso seguito da una scrittura in ingresso durante la sua propagazione attraverso un cluster ONTAP Select. Questo processo si compone di due fasi:

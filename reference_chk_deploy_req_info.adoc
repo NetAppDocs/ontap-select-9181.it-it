@@ -18,6 +18,7 @@ Prima di installare l'utilità di amministrazione Deploy in un ambiente hypervis
 
 
 
+[[required-configuration-information]]
 == Informazioni di configurazione richieste
 
 Nell'ambito della pianificazione dell'implementazione, è necessario determinare le informazioni di configurazione richieste prima di installare l'utilità di amministrazione ONTAP Select Deploy.
@@ -40,6 +41,7 @@ Nell'ambito della pianificazione dell'implementazione, è necessario determinare
 |===
 
 
+[[optional-network-configuration-information]]
 == Informazioni facoltative sulla configurazione di rete
 
 La macchina virtuale Deploy è configurata di default tramite DHCP. Tuttavia, se necessario, è possibile configurare manualmente l'interfaccia di rete per la macchina virtuale.

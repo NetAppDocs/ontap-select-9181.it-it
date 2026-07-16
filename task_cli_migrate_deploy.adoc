@@ -20,6 +20,7 @@ Questa procedura si basa sulla creazione di una nuova macchina virtuale che util
 
 
 
+[[step-1back-up-the-deploy-configuration-data]]
 == Passaggio 1: Eseguire il backup dei dati di configurazione della distribuzione
 
 È necessario creare un backup dei dati di configurazione di Deploy durante la migrazione della macchina virtuale. È inoltre consigliabile creare un backup dopo la distribuzione di un ONTAP Select cluster. I dati vengono salvati in un singolo file crittografato che è possibile scaricare sulla workstation locale.
@@ -63,6 +64,7 @@ deploy backup show -detailed
 
 
 
+[[step-2-install-a-new-instance-of-the-deploy-virtual-machine]]
 == Passaggio 2: Installare una nuova istanza della macchina virtuale Deploy
 
 È necessario creare una nuova istanza della macchina virtuale Deploy che puoi aggiornare con i dati di configurazione della macchina virtuale originale.
@@ -88,6 +90,7 @@ link:task_install_deploy.html["Installa ONTAP Select Deploy"]
 
 
 
+[[step-3-restore-the-deploy-configuration-data-to-the-new-virtual-machine]]
 == Passaggio 3: Ripristinare i dati di configurazione Deploy sulla nuova macchina virtuale
 
 È necessario ripristinare i dati di configurazione dalla macchina virtuale originale dell'utility Deploy alla nuova macchina virtuale. I dati sono contenuti in un singolo file che è necessario caricare dalla propria workstation locale.

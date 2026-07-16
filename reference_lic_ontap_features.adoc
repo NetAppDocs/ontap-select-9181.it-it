@@ -21,6 +21,8 @@ NOTE: Le funzionalità ONTAP che presentano dipendenze specifiche dall'hardware 
 
 
 
+[[ontap-features-automatically-enabled-by-default]]
+[[enabled-ontap-features]]
 == Funzionalità ONTAP abilitate automaticamente per impostazione predefinita
 
 Le seguenti funzionalità di ONTAP sono supportate da ONTAP Select e incluse nella licenza predefinita:
@@ -62,6 +64,7 @@ ONTAP Select supporta SVM DR sia come sorgente che come destinazione, con un mas
 
 
 
+[[ontap-features-that-are-separately-licensed]]
 == Funzionalità ONTAP con licenza separata
 
 È necessario acquisire una licenza separata per qualsiasi funzionalità di ONTAP non abilitata di default, tra cui:

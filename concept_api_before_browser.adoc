@@ -18,12 +18,14 @@ Prima di utilizzare la pagina della documentazione online di Deploy, è opportun
 
 
 
+[[deployment-plan]]
 == Piano di implementazione
 
 Se si intende effettuare chiamate API nell'ambito di specifiche attività di distribuzione o amministrative, è consigliabile creare un piano di distribuzione. Questi piani possono essere formali o informali e in genere includono gli obiettivi e le chiamate API da utilizzare. Consultare Workflow processes using the Deploy REST API per ulteriori informazioni.
 
 
 
+[[json-examples-and-parameter-definitions]]
 == Esempi JSON e definizioni dei parametri
 
 Ogni chiamata API è descritta nella pagina di documentazione utilizzando un formato coerente. Il contenuto include note di implementazione, parametri di query e codici di stato HTTP. Inoltre, è possibile visualizzare i dettagli relativi al JSON utilizzato con le richieste e le risposte API come segue:
@@ -34,6 +36,7 @@ Ogni chiamata API è descritta nella pagina di documentazione utilizzando un for
 
 
 
+[[caution-when-issuing-api-calls]]
 == Prestare attenzione quando si effettuano chiamate API
 
 Tutte le operazioni API eseguite tramite la pagina della documentazione di Deploy sono operazioni in tempo reale. È necessario prestare attenzione per evitare di creare, aggiornare o eliminare per errore dati di configurazione o di altro tipo.

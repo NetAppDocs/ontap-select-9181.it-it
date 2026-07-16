@@ -26,6 +26,7 @@ summary: 'È possibile implementare un"istanza di valutazione di 90 giorni di un
 
 
 
+[[step-1-prepare-the-ontap-select-cluster-host]]
 == Passaggio 1: Preparare l'host del cluster ONTAP Select
 
 Utilizzare i seguenti requisiti per preparare l'host ESXi su cui è distribuito il cluster ONTAP Select. La descrizione della piattaforma si basa sulla configurazione di tipo istanza standard o small con storage ad accesso diretto (DAS) locale formattato utilizzando il file system VMFS-5 o VMFS-6.
@@ -36,6 +37,7 @@ Per ulteriori informazioni sulle opzioni di configurazione dell'host, fare rifer
 
 
 
+[[step-2-deploy-a-single-node-ontap-select-cluster-using-an-ovf-template]]
 == Passaggio 2: Distribuisci un cluster a nodo singolo ONTAP Select utilizzando un modello OVF
 
 Completare i seguenti passaggi su un server host ESXi a 64 bit supportato.

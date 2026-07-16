@@ -18,6 +18,7 @@ Il modello di licensing Capacity Pools è diverso dal modello Capacity Tiers. In
 
 
 
+[[license-manager]]
 == Gestore delle licenze
 
 Il License Manager viene eseguito come processo separato all'interno di ogni istanza dell'utilità di amministrazione Deploy. Alcune delle funzioni fornite dal License Manager includono:
@@ -29,6 +30,7 @@ Il License Manager viene eseguito come processo separato all'interno di ogni ist
 
 
 
+[[lease-characteristics]]
 == Caratteristiche del contratto di locazione
 
 Lo storage allocato per ogni aggregato di dati in un nodo che utilizza una licenza Capacity Pool deve avere un lease associato. Il nodo richiede un lease di storage e, se la capacità è disponibile, il License Manager risponde con un lease. Ogni lease ha i seguenti attributi espliciti o impliciti:
@@ -53,6 +55,7 @@ I contratti di locazione hanno una durata compresa tra un'ora e sette giorni a s
 
 
 
+[[license-lock-id]]
 == ID di blocco licenza
 
 Ogni istanza di License Manager, e quindi ogni istanza corrispondente dell'utilità Deploy, è identificata da un numero univoco a 128 bit. Questo numero viene combinato con il numero di serie a nove cifre della licenza del pool di capacità per associare il pool a una specifica istanza di License Manager (che è di fatto un'istanza di Deploy). È necessario fornire entrambi i valori sul sito di supporto NetApp come parte della generazione del file di licenza NetApp (NLF).
@@ -68,6 +71,7 @@ Deploy visualizza questa pagina quando accedi per la prima volta. Puoi anche apr
 
 
 
+[[basic-lease-operations]]
 == Operazioni di base relative al leasing
 
 Un nodo ONTAP Select deve individuare o richiedere un lease di capacità valido ogni volta che un aggregato di dati viene creato, espanso o modificato. È possibile utilizzare un lease ottenuto da una richiesta precedente ancora valido oppure richiederne uno nuovo, se necessario. Il nodo ONTAP Select esegue i seguenti passaggi per individuare un lease di Capacity Pool:
@@ -83,6 +87,7 @@ Un nodo ONTAP Select deve individuare o richiedere un lease di capacità valido 
 
 
 
+[[return-storage-capacity-to-a-capacity-pool]]
 == Restituire la capacità di archiviazione a un Capacity Pool
 
 La capacità di archiviazione viene allocata da un Capacity Pool in base alle necessità e ogni nuova richiesta può ridurre la capacità di archiviazione disponibile nel pool. La capacità di archiviazione viene restituita al pool in diverse situazioni, tra cui:

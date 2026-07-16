@@ -18,6 +18,7 @@ Se utilizzi ONTAP Select su VMware ESXi, puoi aggiornare il software ESXi da una
 
 
 
+[[prepare-to-upgrade-vmware-esxi]]
 == Preparati ad aggiornare VMware ESXi
 
 Preparare e selezionare la procedura di aggiornamento più adatta al proprio ambiente prima di aggiornare il software ESXi sugli hypervisor che ospitano un cluster ONTAP Select.
@@ -65,6 +66,7 @@ Se si seleziona una procedura di aggiornamento che utilizza l'utilità Deploy, �
 
 
 
+[[upgrade-a-single-node-cluster-using-deploy]]
 == Aggiornare un cluster a nodo singolo utilizzando Deploy
 
 È possibile utilizzare l'utilità di amministrazione Deploy come parte della procedura per aggiornare l'hypervisor VMware ESXi che ospita un cluster a nodo singolo ONTAP Select.
@@ -102,6 +104,7 @@ sdot-d200-011d true    true
 
 
 
+[[upgrade-a-multi-node-cluster-using-deploy]]
 == Aggiornare un cluster multi-nodo utilizzando Deploy
 
 È possibile utilizzare l'utilità di amministrazione Deploy come parte della procedura per aggiornare gli hypervisor VMware ESXi che ospitano un cluster ONTAP Select multi-nodo.
@@ -156,6 +159,7 @@ sdot-d200-012d true true
 
 
 
+[[upgrade-a-single-node-cluster-without-deploy]]
 == Aggiornare un cluster a nodo singolo senza Deploy
 
 È possibile aggiornare l'hypervisor VMware ESXi che ospita un cluster a nodo singolo ONTAP Select senza utilizzare l'utilità di amministrazione Deploy.
@@ -192,6 +196,7 @@ sdot-d200-011d true    true
 
 
 
+[[upgrade-a-multi-node-cluster-without-deploy]]
 == Aggiornare un cluster multi-nodo senza Deploy
 
 È possibile aggiornare gli hypervisor VMware ESXi che ospitano un cluster ONTAP Select multi-nodo senza utilizzare l'utilità di amministrazione Deploy.

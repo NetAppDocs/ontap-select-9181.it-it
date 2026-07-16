@@ -21,6 +21,7 @@ NOTE: Gli aggregati di dati ONTAP Select sono configurati per utilizzare RAID 0 
 
 
 
+[[raid-controller-configuration-for-local-attached-storage]]
 == Configurazione del controller RAID per lo storage collegato localmente
 
 Tutti i dischi collegati localmente che forniscono storage di supporto a ONTAP Select devono essere posizionati dietro un controller RAID. La maggior parte dei server standard offre diverse opzioni di controller RAID a prezzi differenti, ognuna con livelli di funzionalità diversi. L'obiettivo è supportare il maggior numero possibile di queste opzioni, a condizione che soddisfino determinati requisiti minimi imposti al controller.
@@ -46,6 +47,7 @@ NOTE: La dimensione massima dell'estensione e del datastore per le versioni prec
 
 
 
+[[raid-mode]]
 == Modalità RAID
 
 Molti controller RAID supportano fino a tre modalità operative, ognuna delle quali rappresenta una differenza significativa nel percorso dei dati seguito dalle richieste di scrittura. Queste tre modalità sono le seguenti:
@@ -61,6 +63,7 @@ ONTAP Select richiede la presenza di una batteria di backup o di un'unità flash
 
 
 
+[[local-disks-shared-between-ontap-select-and-os]]
 == Dischi locali condivisi tra ONTAP Select e OS
 
 La configurazione server più comune prevede che tutti i dischi collegati localmente si trovino dietro un singolo controller RAID. È necessario predisporre almeno due LUN: una per l'hypervisor e una per la VM ONTAP Select.
@@ -77,6 +80,7 @@ Il provisioning delle LUN del sistema operativo dallo stesso gruppo RAID di ONTA
 
 
 
+[[local-disks-split-between-ontap-select-and-os]]
 == Dischi locali suddivisi tra ONTAP Select e sistema operativo
 
 Un'altra possibile configurazione offerta dai produttori di server prevede la configurazione del sistema con più controller RAID o controller disco. In questa configurazione, un set di dischi è gestito da un controller disco, che può o meno offrire servizi RAID. Un secondo set di dischi è gestito da un controller RAID hardware in grado di offrire servizi RAID 5/6.
@@ -91,12 +95,14 @@ image:ST_09.jpg["Configurazione LUN del server su sistema misto RAID/non-RAID"]
 
 
 
+[[multiple-luns]]
 == LUN multiple
 
 Esistono due casi in cui le configurazioni con un singolo gruppo RAID e una singola LUN devono essere modificate. Quando si utilizzano unità NL-SAS o SATA, la dimensione del gruppo RAID non deve superare le 12 unità. Inoltre, una singola LUN può diventare più grande dei limiti di storage dell'hypervisor sottostante, sia per quanto riguarda la dimensione massima dell'estensione del singolo file system sia per la dimensione massima totale del pool di storage. In tal caso, lo storage fisico deve essere suddiviso in più LUN per consentire la corretta creazione del file system.
 
 
 
+[[vmware-vsphere-virtual-machine-file-system-limits]]
 == Limiti del file system delle macchine virtuali VMware vSphere
 
 La dimensione massima di un datastore su alcune versioni di ESXi è 64TB.
@@ -126,6 +132,7 @@ VMware non supporta gli aggiornamenti in loco da VMFS 5 a VMFS 6. Pertanto, Stor
 
 
 
+[[ontap-select-virtual-disks]]
 == ONTAP Select dischi virtuali
 
 In sostanza, ONTAP Select presenta a ONTAP un set di dischi virtuali forniti da uno o più pool di storage. A ONTAP viene presentato un set di dischi virtuali che tratta come fisici, e la parte restante dello stack di storage è astratta dall'hypervisor. La figura seguente mostra questa relazione in modo più dettagliato, evidenziando la relazione tra il controller RAID fisico, l'hypervisor e la VM ONTAP Select.
@@ -141,6 +148,7 @@ image:ST_12.jpg["Mappatura da disco virtuale a disco fisico"]
 
 
 
+[[virtual-disk-provisioning]]
 == Provisioning di dischi virtuali
 
 Per offrire un'esperienza utente più snella, lo strumento di gestione ONTAP Select, ONTAP Deploy, esegue automaticamente il provisioning dei dischi virtuali dal pool di storage associato e li collega alla VM ONTAP Select. Questa operazione avviene automaticamente sia durante la configurazione iniziale che durante le operazioni di aggiunta di storage. Se il nodo ONTAP Select fa parte di una coppia HA, i dischi virtuali vengono assegnati automaticamente a un pool di storage locale e mirror.
@@ -154,6 +162,7 @@ NOTE: L'aggiunta di capacità a una ONTAP Select VM probabilmente genera VMDK di
 
 
 
+[[virtualized-nvram]]
 == NVRAM virtualizzata
 
 NetApp FAS systems sono tradizionalmente dotati di una scheda PCI NVRAM fisica, una scheda ad alte prestazioni contenente memoria flash non volatile. Questa scheda offre un significativo incremento delle prestazioni di scrittura fornendo a ONTAP la capacità di confermare immediatamente le scritture in arrivo al client. Può anche pianificare lo spostamento dei blocchi di dati modificati verso i supporti di storage più lenti, in un processo noto come destaging.
@@ -164,6 +173,7 @@ NVRAM è posizionata su un proprio VMDK. La suddivisione della NVRAM in un propr
 
 
 
+[[data-path-explained-nvram-and-raid-controller]]
 == Spiegazione del percorso dei dati: NVRAM e controller RAID
 
 L'interazione tra la partizione di sistema NVRAM virtualizzata e il controller RAID può essere illustrata al meglio analizzando il percorso dei dati seguito da una richiesta di scrittura quando entra nel sistema.
